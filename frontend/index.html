@@ -1,13 +1,108 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hackathon Front</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>GardenGrow - Your Mini Farm Planner</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+  </head>
 <body>
-  <div class="container mt-5">
+  <!-- header blase holder -->
+  <div id = "header-placeholder"></div> 
+
+  <section class="hero-section text-center">
+    <div class="container">
+      <h1 class="display-4 fw-bold mb-4">Transform Your Garden into a Mini Farm</h1>
+      <p class="lead mb-5">Plan, grow, and harvest your own food with our easy-to-use garden planning tools</p>
+      <a class="btn btn-success btn-lg px-5 py-3">Start Planning Your Garden</a>
+    </div>
+  </section>
+
+
+
+  <section class="container mb-5">
+    <div class="row text-center">
+      <div class="col-md-4 mb-4">
+        <div class="p-4">
+          <i class="fas fa-map-marked-alt feature-icon"></i>
+          <h3>Interactive Garden Planner</h3>
+          <p>Design your garden layout with our drag-and-drop tool. Visualize your space and optimize plant placement.</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="p-4">
+          <i class="fas fa-calendar-alt feature-icon"></i>
+          <h3>Seasonal Planting Guide</h3>
+          <p>Know exactly when to plant, water, and harvest with personalized schedules based on your location.</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="p-4">
+          <i class="fas fa-leaf feature-icon"></i>
+          <h3>Plant Database</h3>
+          <p>Access information on hundreds of plants, including growing requirements and companion planting advice.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container mb-5">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <h2>How It Works</h2>
+        <div class="d-flex mb-3">
+          <div class="me-3">
+            <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">1</div>
+          </div>
+          <div>
+            <h5>Measure Your Space</h5>
+            <p>Enter your garden dimensions to create an accurate layout.</p>
+          </div>
+        </div>
+        <div class="d-flex mb-3">
+          <div class="me-3">
+            <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">2</div>
+          </div>
+          <div>
+            <h5>Select Your Plants</h5>
+            <p>Browse our database and choose plants that match your climate and preferences.</p>
+          </div>
+        </div>
+        <div class="d-flex mb-3">
+          <div class="me-3">
+            <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">3</div>
+          </div>
+          <div>
+            <h5>Follow Your Plan</h5>
+            <p>Get reminders and track progress as your garden grows.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <img src="assets/image/ho.jpg" alt="Garden planning illustration" class="img-fluid rounded shadow">
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section text-center">
+    <div class="container">
+      <h2 class="mb-4">Ready to Grow Your Own Food?</h2>
+      <p class="lead mb-4">Join thousands of gardeners creating sustainable mini farms at home</p>
+      <button class="btn btn-success btn-lg px-5 py-3">Get Started Free</button>
+    </div>
+  </section>
+
+  <footer class="bg-dark text-white py-4 mt-5">
+
+  </footer>
+
+
+  <!-- <div class="container mt-5">
     <h1>Bienvenue au Hackathon</h1>
     <div id="api-data"></div>
   </div>
@@ -17,6 +112,9 @@
       .then(data => {
         document.getElementById('api-data').innerText = JSON.stringify(data);
       });
-  </script>
+  </script> -->
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/include.js"></script>
 </body>
 </html>
