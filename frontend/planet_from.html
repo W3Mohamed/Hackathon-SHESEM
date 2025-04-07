@@ -4,9 +4,10 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <title>GardenGrow - Your Mini Farm Planner</title>
+        <title>Résultats de Recherche de Plantes</title>
 
         <link rel="stylesheet" href="assets/css/style.css">
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -240,7 +241,7 @@
     <div id="header-placeholder"></div>
 
     <div class="container py-5">
-        <h1 class="page-title text-center mb-4">Plant Your Garden</h1>
+        <h1 class="page-title text-center mb-4">Trouver la plante idéale</h1>
         <p class="text-center mb-5">Tell us about your gardening preferences and we'll recommend the best plants for you</p>
         
         <div class="row row-equal-height">
@@ -657,224 +658,277 @@
         
         // Form submission
         document.getElementById('planet_form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const formObject = {};
-            
-            formData.forEach((value, key) => {
-                formObject[key] = value;
-            });
-            
-            // You would send this to your backend API
-            fetch('../backend/api/resultats.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formObject)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    window.location.href = 'planets.html';
-                } else {
-                    alert('Error: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while submitting the form.');
-            });
-        });
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const formObject = {};
+    
+    formData.forEach((value, key) => {
+        formObject[key] = value;
+    });
+    
+    // Store the filter data in sessionStorage for the results page
+    sessionStorage.setItem('plantFilters', JSON.stringify(formObject));
+    
+    // You would send this to your backend API
+    fetch('../backend/api/resultats.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formObject)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            // Store the results in sessionStorage to display them on the results page
+            sessionStorage.setItem('plantResults', JSON.stringify(data));
+            // Redirect to results.html instead of planets.html
+            window.location.href = 'resultats.html';
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while submitting the form.');
+    });
+});
     </script>
 
     <!-- ajax -->
     <script>
-    // AJAX functionality for form handling
-    $(document).ready(function() {
-        // Auto-save feature - save form data as user progresses
-        const formFields = [
-            'categorie', 'superficie', 'saison_adequate', 'luminosite', 
-            'type_de_sol', 'systeme_d_irrigation', 'resistance_au_froid',
-            'resistance_aux_pests', 'niveau_d_entretien', 'type_de_culture'
-        ];
-        
-        // Save form data to localStorage when a field changes
-        formFields.forEach(field => {
-            $(`#${field}`).on('change', function() {
-                saveFormProgress();
-            });
-        });
-        
-        // Function to save form progress
-        function saveFormProgress() {
-            const formData = {};
-            formFields.forEach(field => {
-                const value = $(`#${field}`).val();
-                if (value) {
-                    formData[field] = value;
-                }
-            });
-            
-            localStorage.setItem('gardenGrowFormData', JSON.stringify(formData));
-            console.log('Form progress saved');
-        }
-        
-        // Load saved form data when page loads
-        function loadFormProgress() {
-            const savedData = localStorage.getItem('gardenGrowFormData');
-            if (savedData) {
-                const formData = JSON.parse(savedData);
-                let furthestStep = 1;
-                
-                formFields.forEach((field, index) => {
-                    if (formData[field]) {
-                        $(`#${field}`).val(formData[field]);
-                        furthestStep = Math.max(furthestStep, index + 1);
-                    }
+        /**
+         * Function to fetch plants based on filters
+         * @param {Object} filters - The filter criteria
+         * @param {number} page - The page number for pagination
+         * @returns {Promise} - Promise containing the API response
+         */
+        async function fetchPlants(filters, page = 1) {
+            try {
+                const response = await fetch(`../backend/api/resultats.php?page=${page}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(filters)
                 });
-                
-                // Move to the furthest completed step
-                if (furthestStep > 1) {
-                    currentStep = furthestStep;
-                    showStep(currentStep);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-                
-                console.log('Form data restored');
+
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching plants:', error);
+                return {
+                    status: 'error',
+                    message: 'Failed to fetch plants. Please try again later.'
+                };
             }
         }
-        
-        // Try to load saved progress
-        loadFormProgress();
-        
-        // Override the form submission
-        $('#planet_form').on('submit', function(e) {
-            e.preventDefault();
-            submitFormWithAjax();
-        });
-        
-        // Also trigger form submission when the submit button is clicked
-        $('#submitBtn').on('click', function() {
-            submitFormWithAjax();
-        });
-        
-        // Form submission function with loading indicator
-        function submitFormWithAjax() {
-            // Show loading state
-            $('#submitBtn').html('<i class="fas fa-spinner fa-spin me-2"></i>Processing...');
-            $('#submitBtn').prop('disabled', true);
+
+        /**
+         * Function to display plants in the UI
+         * @param {Array} plants - Array of plant objects
+         */
+        function displayPlants(plants) {
+            const resultsContainer = document.getElementById('results-container');
             
-            // Get form data
-            const formData = {};
-            formFields.forEach(field => {
-                formData[field] = $(`#${field}`).val() || '';
-            });
-            
-            // Basic validation before submission
-            if (!validateForm(formData)) {
-                $('#submitBtn').html('<i class="fas fa-check-circle me-2"></i>Submit');
-                $('#submitBtn').prop('disabled', false);
+            if (!resultsContainer) {
+                console.error('Results container not found');
                 return;
             }
             
-            // Send data to backend
-            $.ajax({
-                url: '../backend/api/resultats.php',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(formData),
-                success: function(response) {
-                    // Clear saved form data on successful submission
-                    localStorage.removeItem('gardenGrowFormData');
-                    
-                    // Show success message
-                    showNotification('success', 'Your plant information was submitted successfully!');
-                    
-                    // Redirect after a short delay
-                    setTimeout(function() {
-                        window.location.href = 'planets.html';
-                    }, 1500);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error submitting form:', error);
-                    
-                    // Parse error message if possible
-                    let errorMsg = 'An error occurred while submitting the form.';
-                    try {
-                        const response = JSON.parse(xhr.responseText);
-                        if (response.message) {
-                            errorMsg = response.message;
-                        }
-                    } catch (e) {
-                        // Use default error message
-                    }
-                    
-                    showNotification('error', errorMsg);
-                    
-                    // Reset button state
-                    $('#submitBtn').html('<i class="fas fa-check-circle me-2"></i>Submit');
-                    $('#submitBtn').prop('disabled', false);
-                }
+            // Clear previous results
+            resultsContainer.innerHTML = '';
+            
+            if (plants.length === 0) {
+                resultsContainer.innerHTML = '<div class="no-results">Aucune plante ne correspond à vos critères</div>';
+                return;
+            }
+            
+            // Create plant cards
+            plants.forEach(plant => {
+                const plantCard = document.createElement('div');
+                plantCard.className = 'plant-card';
+                plantCard.innerHTML = `
+                    <img src="${plant.image_url || '../assets/default-plant.jpg'}" alt="${plant.nom}">
+                    <h3>${plant.nom}</h3>
+                    <p>${plant.description_courte || ''}</p>
+                    <a href="detail-plante.php?id=${plant.id}" class="btn-details">Voir détails</a>
+                `;
+                resultsContainer.appendChild(plantCard);
             });
         }
-        
-        // Basic form validation
-        function validateForm(formData) {
-            // Check if category is selected (required field)
-            if (!formData.categorie) {
-                showNotification('error', 'Please select a plant category');
-                currentStep = 1;
-                showStep(currentStep);
-                return false;
+
+        /**
+         * Function to setup pagination
+         * @param {number} currentPage - Current page number
+         * @param {number} totalCount - Total number of results
+         * @param {Function} callback - Function to call when page is changed
+         */
+        function setupPagination(currentPage, totalCount, callback) {
+            const paginationContainer = document.getElementById('pagination');
+            
+            if (!paginationContainer) {
+                console.error('Pagination container not found');
+                return;
             }
             
-            // More validation rules can be added here for other fields
+            const limit = 8; // Same as in the PHP file
+            const totalPages = Math.ceil(totalCount / limit);
             
-            return true;
-        }
-        
-        // Create a notification system
-        function showNotification(type, message) {
-            // Remove any existing notifications
-            $('.form-notification').remove();
+            paginationContainer.innerHTML = '';
             
-            // Create notification element
-            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
-            const icon = type === 'success' ? 'check-circle' : 'exclamation-triangle';
+            // Don't show pagination if there's only one page
+            if (totalPages <= 1) return;
             
-            const notification = `
-                <div class="form-notification alert ${alertClass} alert-dismissible fade show mt-3" role="alert">
-                    <i class="fas fa-${icon} me-2"></i>
-                    ${message}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            `;
+            // Previous button
+            const prevBtn = document.createElement('button');
+            prevBtn.innerHTML = '&laquo; Précédent';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) callback(currentPage - 1);
+            });
             
-            // Insert notification at the top of the form
-            $('.card-body').prepend(notification);
+            // Next button
+            const nextBtn = document.createElement('button');
+            nextBtn.innerHTML = 'Suivant &raquo;';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages) callback(currentPage + 1);
+            });
             
-            // Auto-dismiss after 5 seconds
-            setTimeout(function() {
-                $('.form-notification').alert('close');
-            }, 5000);
-        }
-        
-        // Real-time field validation as user moves through steps
-        $('#nextBtn').on('click', function() {
-            const currentField = formFields[currentStep - 1];
-            const value = $(`#${currentField}`).val();
+            paginationContainer.appendChild(prevBtn);
             
-            if (!value && currentStep > 1) {
-                // Field is required; prevent moving to next step
-                showNotification('error', `Please complete the current field before continuing`);
-                return false;
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.textContent = i;
+                pageBtn.className = i === currentPage ? 'active' : '';
+                pageBtn.addEventListener('click', () => callback(i));
+                paginationContainer.appendChild(pageBtn);
             }
             
-            // Auto-save when moving to next step
-            saveFormProgress();
+            paginationContainer.appendChild(nextBtn);
+        }
+
+        /**
+         * Function to handle form submission
+         * @param {Event} event - The form submission event
+         */
+        function handleFilterSubmit(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            // Convert formData to object for the API
+            const filters = {
+                categorie: formData.get('categorie'),
+                superficie: parseFloat(formData.get('superficie')),
+                saison_adequate: formData.get('saison_adequate'),
+                luminosite: formData.get('luminosite'),
+                type_de_sol: formData.get('type_de_sol'),
+                systeme_d_irrigation: formData.get('systeme_d_irrigation'),
+                resistance_au_froid: formData.get('resistance_au_froid'),
+                resistance_aux_pests: formData.get('resistance_aux_pests'),
+                niveau_d_entretien: formData.get('niveau_d_entretien'),
+                type_de_culture: formData.get('type_de_culture')
+            };
+            
+            // Store filters in session storage for pagination
+            sessionStorage.setItem('plantFilters', JSON.stringify(filters));
+            
+            // Fetch first page of results
+            loadResults(filters, 1);
+        }
+
+        /**
+         * Function to load results with filters and pagination
+         * @param {Object} filters - The filter criteria
+         * @param {number} page - The page number
+         */
+        async function loadResults(filters, page) {
+            // Show loading indicator
+            const resultsContainer = document.getElementById('results-container');
+            if (resultsContainer) {
+                resultsContainer.innerHTML = '<div class="loading">Chargement des résultats...</div>';
+            }
+            
+            const response = await fetchPlants(filters, page);
+            
+            if (response.status === 'success') {
+                displayPlants(response.data);
+                setupPagination(page, response.count, (newPage) => {
+                    // Get filters from session storage
+                    const storedFilters = JSON.parse(sessionStorage.getItem('plantFilters'));
+                    loadResults(storedFilters, newPage);
+                });
+            } else {
+                if (resultsContainer) {
+                    resultsContainer.innerHTML = `<div class="error">${response.message}</div>`;
+                }
+            }
+        }
+
+        // Initialize event listeners when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            const filterForm = document.getElementById('filter-form');
+            
+            if (filterForm) {
+                filterForm.addEventListener('submit', handleFilterSubmit);
+            }
+            
+            // If there are default filters or stored filters, load them
+            const storedFilters = sessionStorage.getItem('plantFilters');
+            
+            if (storedFilters) {
+                loadResults(JSON.parse(storedFilters), 1);
+            }
         });
+    </script>
+
+
+<script>
+    document.getElementById('planet_form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const formObject = {};
+    
+    formData.forEach((value, key) => {
+        formObject[key] = value;
     });
+    
+    // Store the filter data in sessionStorage for the results page
+    sessionStorage.setItem('plantFilters', JSON.stringify(formObject));
+    
+    // You would send this to your backend API
+    fetch('../backend/api/resultats.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formObject)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            // Store the results in sessionStorage to display them on the results page
+            sessionStorage.setItem('plantResults', JSON.stringify(data));
+            // Redirect to results.html instead of planets.html
+            window.location.href = 'resultats.html';
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while submitting the form.');
+    });
+});
 </script>
     
 </body>

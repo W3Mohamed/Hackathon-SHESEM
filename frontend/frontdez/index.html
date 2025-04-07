@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogue de Plantes | Jardin Botanique</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'playfair': ['"Playfair Display"', 'serif'],
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        'nature-green': '#3a5a40',
+                        'leaf-green': '#588157',
+                        'mint-green': '#a3b18a',
+                        'light-beige': '#f5f5f4',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-light-beige font-poppins">
+    <div class="container mx-auto px-4 py-12">
+        <!-- En-tête -->
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-playfair font-bold text-nature-green mb-4">Notre Collection Botanique</h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">Découvrez notre sélection exceptionnelle de plantes pour embellir votre intérieur et votre jardin</p>
+        </header>
+
+        <!-- Grille de plantes -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <!-- Carte Plante 1 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div class="h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                         alt="Monstera Deliciosa" 
+                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="p-6">
+                    <span class="inline-block px-3 py-1 text-xs font-semibold text-mint-green bg-nature-green rounded-full mb-2">Plante d'intérieur</span>
+                    <h3 class="text-xl font-playfair font-bold text-gray-800 mb-2">Monstera Deliciosa</h3>
+                    <p class="text-gray-600 mb-4">Aussi appelée "plante-gruyère" pour ses feuilles ajourées caractéristiques.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-leaf-green font-semibold">Facile d'entretien</span>
+                        <button class="text-nature-green hover:text-leaf-green transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte Plante 2 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div class="h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1463154545680-d59320fd685d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                         alt="Lavande" 
+                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="p-6">
+                    <span class="inline-block px-3 py-1 text-xs font-semibold text-mint-green bg-nature-green rounded-full mb-2">Plante aromatique</span>
+                    <h3 class="text-xl font-playfair font-bold text-gray-800 mb-2">Lavande Officinale</h3>
+                    <p class="text-gray-600 mb-4">Parfum envoûtant et propriétés apaisantes, idéale pour les jardins secs.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-leaf-green font-semibold">Besoin de soleil</span>
+                        <button class="text-nature-green hover:text-leaf-green transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte Plante 3 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div class="h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1534710961216-75c88202f43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                         alt="Ficus Lyrata" 
+                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="p-6">
+                    <span class="inline-block px-3 py-1 text-xs font-semibold text-mint-green bg-nature-green rounded-full mb-2">Plante d'intérieur</span>
+                    <h3 class="text-xl font-playfair font-bold text-gray-800 mb-2">Ficus Lyrata</h3>
+                    <p class="text-gray-600 mb-4">Appelé "figuier à feuilles de lyre" pour la forme élégante de ses feuilles.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-leaf-green font-semibold">Lumière modérée</span>
+                        <button class="text-nature-green hover:text-leaf-green transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte Plante 4 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div class="h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1598880940080-ff9a29891b85?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                         alt="Eucalyptus" 
+                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                </div>
+                <div class="p-6">
+                    <span class="inline-block px-3 py-1 text-xs font-semibold text-mint-green bg-nature-green rounded-full mb-2">Arbre méditerranéen</span>
+                    <h3 class="text-xl font-playfair font-bold text-gray-800 mb-2">Eucalyptus Globulus</h3>
+                    <p class="text-gray-600 mb-4">Feuillage persistant et aromatique, croissance rapide et résistant.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-leaf-green font-semibold">Résistant à la sécheresse</span>
+                        <button class="text-nature-green hover:text-leaf-green transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section d'information -->
+        <div class="mt-20 bg-white rounded-xl shadow-lg p-8 max-w-4xl mx-auto">
+            <h2 class="text-2xl font-playfair font-bold text-nature-green mb-6 text-center">Conseils pour vos plantes</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-leaf-green mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z" clip-rule="evenodd" />
+                        </svg>
+                        Arrosage optimal
+                    </h3>
+                    <p class="text-gray-600">La plupart des plantes d'intérieur préfèrent un arrosage modéré. Laissez sécher le terreau entre deux arrosages pour éviter le pourrissement des racines.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-leaf-green mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z" clip-rule="evenodd" />
+                        </svg>
+                        Exposition lumineuse
+                    </h3>
+                    <p class="text-gray-600">Placez vos plantes près des fenêtres selon leurs besoins. Les plantes tropicales préfèrent la lumière indirecte, tandis que les succulentes aiment le plein soleil.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

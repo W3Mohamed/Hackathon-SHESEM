@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails de la Plante | Jardin Botanique</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'playfair': ['"Playfair Display"', 'serif'],
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        'nature-green': '#3a5a40',
+                        'leaf-green': '#588157',
+                        'mint-green': '#a3b18a',
+                        'light-beige': '#f5f5f4',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-light-beige font-poppins">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Bouton retour -->
+        <a href="index.html" class="inline-flex items-center text-nature-green hover:text-leaf-green mb-6 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+            </svg>
+            Retour au catalogue
+        </a>
+
+        <!-- En-tête -->
+        <div class="flex flex-col md:flex-row gap-8 mb-12">
+            <!-- Image principale -->
+            <div class="md:w-1/2">
+                <div class="rounded-xl overflow-hidden shadow-lg h-80 md:h-full">
+                    <img id="plant-image" src="" alt="Image de la plante" class="w-full h-full object-cover">
+                </div>
+            </div>
+            
+            <!-- Titre et info principale -->
+            <div class="md:w-1/2">
+                <span id="plant-category" class="inline-block px-3 py-1 text-xs font-semibold text-mint-green bg-nature-green rounded-full mb-4"></span>
+                <h1 id="plant-name" class="text-3xl md:text-4xl font-playfair font-bold text-gray-800 mb-4"></h1>
+                <p id="plant-description" class="text-gray-600 mb-6"></p>
+                
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="bg-white p-4 rounded-lg shadow-sm">
+                        <div class="text-xs text-gray-500">Niveau d'entretien</div>
+                        <div id="maintenance-level" class="font-semibold text-leaf-green"></div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm">
+                        <div class="text-xs text-gray-500">Résistance au froid</div>
+                        <div id="cold-resistance" class="font-semibold"></div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm">
+                        <div class="text-xs text-gray-500">Hauteur maximale</div>
+                        <div id="max-height" class="font-semibold"></div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm">
+                        <div class="text-xs text-gray-500">Luminosité</div>
+                        <div id="light-needs" class="font-semibold"></div>
+                    </div>
+                </div>
+                
+                <!-- <button class="w-full md:w-auto bg-nature-green hover:bg-leaf-green text-white px-6 py-3 rounded-lg transition-colors flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                    </svg>
+                    Ajouter à mon jardin
+                </button> -->
+            </div>
+        </div>
+
+        <!-- Détails complets -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-12">
+            <div class="border-b border-gray-100">
+                <div class="px-6 py-4">
+                    <h2 class="text-xl font-playfair font-bold text-nature-green">Informations détaillées</h2>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+                <!-- Colonne 1 -->
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-500">Superficie minimale</h3>
+                        <p id="min-area" class="mt-1"></p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-500">Saison adéquate</h3>
+                        <p id="best-season" class="mt-1"></p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-500">Luminosité</h3>
+                        <p id="light" class="mt-1"></p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-500">Système d'irrigation</h3>
+                        <p id="irrigation" class="mt-1"></p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-500">Fréquence d'arrosage</h3>
+                        <p id="watering-frequency" class="mt-1"></p>
+                    </div>
+                </div>
+                
+                <!-- Colonne 2 -->
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-500">Quantité d'arrosage</h3>
+                        <p id="watering-amount" class="mt-1"></p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-500">Temps de plein développement</h3>
+                        <p id="full-growth-time" class="mt-1"></p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-500">Type de sol</h3>
+                        <p id="soil-type" class="mt-1"></p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-500">Distance entre plantes</h3>
+                        <p id="plant-distance" class="mt-1"></p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-500">Largeur maximale</h3>
+                        <p id="max-width" class="mt-1"></p>
+                    </div>
+                </div>
+                
+                <!-- Colonne 3 -->
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-500">Résistance aux parasites</h3>
+                        <p id="pest-resistance" class="mt-1"></p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-500">Utilisation recommandée</h3>
+                        <p id="recommended-use" class="mt-1"></p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-500">Type de culture</h3>
+                        <p id="culture-type" class="mt-1"></p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-500">Date de plantation idéale</h3>
+                        <p id="planting-date" class="mt-1"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conseils d'entretien -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-12">
+            <div class="border-b border-gray-100">
+                <div class="px-6 py-4">
+                    <h2 class="text-xl font-playfair font-bold text-nature-green">Conseils d'entretien</h2>
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="prose max-w-none">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Arrosage optimal</h3>
+                    <p id="watering-tips" class="text-gray-600 mb-4"></p>
+                    
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Exposition lumineuse</h3>
+                    <p id="light-tips" class="text-gray-600 mb-4"></p>
+                    
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Engrais et rempotage</h3>
+                    <p id="fertilizer-tips" class="text-gray-600"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Galerie d'images -->
+        <div class="mb-12">
+            <h2 class="text-xl font-playfair font-bold text-nature-green mb-6">Galerie photo</h2>
+            <div id="plant-gallery" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Les images seront ajoutées dynamiquement ici -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Pied de page -->
+    <footer class="bg-nature-green text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-2">© 2023 Jardin Botanique - Tous droits réservés</p>
+            <p class="text-sm text-mint-green">Des conseils de professionnels pour vos plantes</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Récupérer l'ID de la plante depuis l'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const plantId = urlParams.get('id');
+
+            if (!plantId) {
+                alert('ID de plante non spécifié');
+                return;
+            }
+
+            // Appel AJAX pour récupérer les données de la plante
+            fetch(`../../backend/api/detail.php?id=${plantId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erreur réseau');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.status === 'error') {
+                        alert(data.message);
+                        return;
+                    }
+
+                    const plant = data.data;
+                    
+                    // Remplir les informations principales
+                    document.getElementById('plant-name').textContent = plant.libelle;
+                    document.getElementById('plant-category').textContent = plant.categorie;
+                    document.getElementById('plant-description').textContent = plant.description || "Aucune description disponible.";
+                    document.getElementById('maintenance-level').textContent = plant.niveau_d_entretien || "Non spécifié";
+                    document.getElementById('cold-resistance').textContent = plant.resistance_au_froid || "Non spécifié";
+                    document.getElementById('max-height').textContent = plant.hauteur_maximale ? `${plant.hauteur_maximale} m` : "Non spécifié";
+                    document.getElementById('light-needs').textContent = plant.luminosite || "Non spécifié";
+                    
+                    // Image principale (vous devrez adapter selon votre structure de données)
+                    document.getElementById('plant-image').src = plant.image_url || 'https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80';
+                    document.getElementById('plant-image').alt = plant.libelle;
+
+                    // Remplir les détails
+                    document.getElementById('min-area').textContent = plant.superficie_minimale ? `${plant.superficie_minimale} m²` : "Non spécifié";
+                    document.getElementById('best-season').textContent = plant.saison_adequate || "Non spécifié";
+                    document.getElementById('light').textContent = plant.luminosite || "Non spécifié";
+                    document.getElementById('irrigation').textContent = plant.systeme_d_irrigation || "Non spécifié";
+                    document.getElementById('watering-frequency').textContent = plant.frequence_arrosage || "Non spécifié";
+                    document.getElementById('watering-amount').textContent = plant.quantite_arrosage || "Non spécifié";
+                    document.getElementById('full-growth-time').textContent = plant.temps_plein || "Non spécifié";
+                    document.getElementById('soil-type').textContent = plant.type_de_sol || "Non spécifié";
+                    document.getElementById('plant-distance').textContent = plant.distance_entre_plantes ? `${plant.distance_entre_plantes} cm` : "Non spécifié";
+                    document.getElementById('max-width').textContent = plant.largeur_maximale ? `${plant.largeur_maximale} m` : "Non spécifié";
+                    document.getElementById('pest-resistance').textContent = plant.resistance_aux_pests || "Non spécifié";
+                    document.getElementById('recommended-use').textContent = plant.utilisation_recommandee || "Non spécifié";
+                    document.getElementById('culture-type').textContent = plant.type_de_culture || "Non spécifié";
+                    document.getElementById('planting-date').textContent = plant.date_plantation || "Non spécifié";
+
+                    // Conseils d'entretien (vous pouvez adapter selon vos besoins)
+                    document.getElementById('watering-tips').textContent = 
+                        `Arrosez votre ${plant.libelle} ${plant.frequence_arrosage || 'régulièrement'}. ${plant.quantite_arrosage ? `Quantité recommandée: ${plant.quantite_arrosage}.` : ''}`;
+                    
+                    document.getElementById('light-tips').textContent = 
+                        `Cette plante préfère ${plant.luminosite || 'une lumière modérée'}.`;
+                    
+                    document.getElementById('fertilizer-tips').textContent = 
+                        `Utilisez un engrais adapté pour ${plant.type_de_culture || 'ce type de plante'} ${plant.type_de_sol ? `avec un sol de type ${plant.type_de_sol}.` : '.'}`;
+
+                    // Galerie d'images (à adapter selon votre structure de données)
+                    const galleryContainer = document.getElementById('plant-gallery');
+                    // Exemple avec des images statiques - à remplacer par vos données
+                    const galleryImages = [
+                        'https://images.unsplash.com/photo-1598880940080-ff9a29891b85?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
+                        'https://images.unsplash.com/photo-1534710961216-75c88202f43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
+                        'https://images.unsplash.com/photo-1463154545680-d59320fd685d?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'
+                    ];
+
+                    galleryImages.forEach(imgUrl => {
+                        const imgDiv = document.createElement('div');
+                        imgDiv.className = 'rounded-lg overflow-hidden h-40';
+                        imgDiv.innerHTML = `
+                            <img src="${imgUrl}" 
+                                 alt="${plant.libelle}" 
+                                 class="w-full h-full object-cover hover:scale-105 transition-transform">
+                        `;
+                        galleryContainer.appendChild(imgDiv);
+                    });
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    alert('Une erreur est survenue lors du chargement des données de la plante');
+                });
+        });
+    </script>
+</body>
+</html>

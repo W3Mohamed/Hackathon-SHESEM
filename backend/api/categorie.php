@@ -1,4 +1,4 @@
-<?php
+    <?php
     header('Content-Type: application/json');
     include_once('../db.php');
 
@@ -9,12 +9,28 @@
     // Calculer l'offset pour la pagination
     $offset = ($page - 1) * $limit;
 
-    // Requête SQL pour récupérer toutes les plantes avec pagination
-    $sql = "SELECT * FROM plante LIMIT :limit OFFSET :offset";
+    // Vérifier si un filtre de catégorie est passé dans l'URL
+    $categorie = isset($_GET['categorie']) ? $_GET['categorie'] : null;
 
+    // Requête SQL pour récupérer les plantes avec pagination et filtre par catégorie (si spécifié)
+    $sql = "SELECT * FROM plante WHERE 1";
+
+    // Ajouter le filtre de catégorie si spécifié
+    if ($categorie) {
+        $sql .= " AND categorie = :categorie";
+    }
+
+    // Ajouter la pagination
+    $sql .= " LIMIT :limit OFFSET :offset";
+
+    // Préparer la requête
     $stmt = $pdo->prepare($sql);
 
-    // Lier les valeurs avec bindValue
+    // Lier les valeurs
+    if ($categorie) {
+        $stmt->bindValue(':categorie', $categorie, PDO::PARAM_STR);
+    }
+
     $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 
@@ -39,3 +55,4 @@
             'message' => 'Aucune plante trouvée'
         ]);
     }
+?>

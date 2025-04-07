@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>GardenGrow - Your Plant Collection</title>
-
-    <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -226,33 +223,33 @@
         margin: 2rem auto;
       }
 
-        .pagination-container {
-            margin: 2rem 0;
-        }
-        
-        .pagination .page-link {
-            border-radius: 8px;
-            margin: 0 3px;
-            color: var(--primary);
-            border: 1px solid var(--neutral-medium);
-            transition: var(--transition);
-        }
-        
-        .pagination .page-item.active .page-link {
-            background-color: var(--primary);
-            border-color: var(--primary);
-            color: white;
-        }
-        
-        .pagination .page-link:hover:not(.active) {
-            background-color: var(--neutral-light);
-            transform: translateY(-2px);
-        }
-        
-        .pagination .page-item:first-child .page-link,
-        .pagination .page-item:last-child .page-link {
-            padding: 0.5rem 0.75rem;
-        }
+      .pagination-container {
+          margin: 2rem 0;
+      }
+      
+      .pagination .page-link {
+          border-radius: 8px;
+          margin: 0 3px;
+          color: var(--primary);
+          border: 1px solid var(--neutral-medium);
+          transition: var(--transition);
+      }
+      
+      .pagination .page-item.active .page-link {
+          background-color: var(--primary);
+          border-color: var(--primary);
+          color: white;
+      }
+      
+      .pagination .page-link:hover:not(.active) {
+          background-color: var(--neutral-light);
+          transform: translateY(-2px);
+      }
+      
+      .pagination .page-item:first-child .page-link,
+      .pagination .page-item:last-child .page-link {
+          padding: 0.5rem 0.75rem;
+      }
       
       @keyframes spin {
         0% { transform: rotate(0deg); }
@@ -269,28 +266,27 @@
         }
       }
     </style>
-  </head>
+</head>
 <body>
     <!-- Header placeholder -->
     <div id="header-placeholder"></div> 
-
-
     <div class="container mt-4">
       <!-- Search and Filters -->
       <div class="search-container mb-4">
         <div class="row mb-3">
           <div class="col">
-            <input type="text" id="searchInput" class="form-control search-input" placeholder="Search plants...">
+            <input type="text" id="searchInput" class="form-control search-input" placeholder="Rechercher des plantes...">
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <h6 class="mb-2">Filter by category:</h6>
-            <div class="filter-badges">
-              <button class="filter-badge active" data-category="all">All Plants</button>
-              <button class="filter-badge" data-category="Légumes">Fruits</button>
-              <button class="filter-badge" data-category="Fruits">Céréales</button>
-              <button class="filter-badge" data-category="Herbes aromatiques">Légumineuses</button>
+            <h6 class="mb-2">Filtrer par catégorie:</h6>
+            <div class="filter-badges" id="categoryFilters">
+              <button class="filter-badge active" data-category="all">Toutes les plantes</button>
+              <button class="filter-badge" data-category="Légumes">Légumes</button>
+              <button class="filter-badge" data-category="Fruits">Fruits</button>
+              <button class="filter-badge" data-category="Céréale">Céréale</button>
+              <button class="filter-badge" data-category="Légumineuse">Légumineuse</button>
             </div>
           </div>
         </div>
@@ -298,365 +294,296 @@
       
       <!-- Plants Grid -->
       <div class="row" id="plantsContainer">
-        <!-- Plant cards will be loaded here -->
-        <div class="col-md-4 col-lg-3 mb-4">
-          <div class="plant-card">
-            <div class="plant-img-container">
-              <img src="https://images.unsplash.com/photo-1518568814500-bf0f8d125f46" class="plant-img" alt="Tomato plant">
-              <div class="plant-category">Fruit</div>
-            </div>
-            <div class="plant-body">
-              <h5 class="plant-title">Tomate Roma</h5>
-              <p class="plant-subtitle">Idéal pour les sauces et les conserves</p>
-              <div class="plant-features">
-                <span class="plant-feature"><i class="fas fa-sun"></i> Plein soleil</span>
-                <span class="plant-feature"><i class="fas fa-tint"></i> Modéré</span>
-                <span class="plant-feature"><i class="fas fa-thermometer-half"></i> Été</span>
-              </div>
-              <div class="plant-footer">
-                <div class="difficulty">
-                  <div class="difficulty-dot dot-filled"></div>
-                  <div class="difficulty-dot dot-filled"></div>
-                  <div class="difficulty-dot dot-empty"></div>
-                  <small class="ms-1">Modéré</small>
-                </div>
-                <button class="btn-view">Voir détails</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="col-md-4 col-lg-3 mb-4">
-          <div class="plant-card">
-            <div class="plant-img-container">
-              <img src="https://images.unsplash.com/photo-1550828520-4cb496926fc9" class="plant-img" alt="Wheat">
-              <div class="plant-category">Céréale</div>
-            </div>
-            <div class="plant-body">
-              <h5 class="plant-title">Blé tendre</h5>
-              <p class="plant-subtitle">Variété adaptée aux climats tempérés</p>
-              <div class="plant-features">
-                <span class="plant-feature"><i class="fas fa-sun"></i> Plein soleil</span>
-                <span class="plant-feature"><i class="fas fa-tint"></i> Faible</span>
-                <span class="plant-feature"><i class="fas fa-thermometer-half"></i> Printemps</span>
-              </div>
-              <div class="plant-footer">
-                <div class="difficulty">
-                  <div class="difficulty-dot dot-filled"></div>
-                  <div class="difficulty-dot dot-empty"></div>
-                  <div class="difficulty-dot dot-empty"></div>
-                  <small class="ms-1">Facile</small>
-                </div>
-                <button class="btn-view">Voir détails</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="col-md-4 col-lg-3 mb-4">
-          <div class="plant-card">
-            <div class="plant-img-container">
-              <img src="https://images.unsplash.com/photo-1599482056242-39fedef461a5" class="plant-img" alt="Lentils">
-              <div class="plant-category">Légumineuse</div>
-            </div>
-            <div class="plant-body">
-              <h5 class="plant-title">Lentilles vertes</h5>
-              <p class="plant-subtitle">Riche en protéines et facile à cultiver</p>
-              <div class="plant-features">
-                <span class="plant-feature"><i class="fas fa-sun"></i> Mi-ombre</span>
-                <span class="plant-feature"><i class="fas fa-tint"></i> Modéré</span>
-                <span class="plant-feature"><i class="fas fa-thermometer-half"></i> Automne</span>
-              </div>
-              <div class="plant-footer">
-                <div class="difficulty">
-                  <div class="difficulty-dot dot-filled"></div>
-                  <div class="difficulty-dot dot-filled"></div>
-                  <div class="difficulty-dot dot-filled"></div>
-                  <small class="ms-1">Difficile</small>
-                </div>
-                <button class="btn-view">Voir détails</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="col-md-4 col-lg-3 mb-4">
-          <div class="plant-card">
-            <div class="plant-img-container">
-              <img src="https://images.unsplash.com/photo-1595267309225-386c692d4c9a" class="plant-img" alt="Strawberry">
-              <div class="plant-category">Fruit</div>
-            </div>
-            <div class="plant-body">
-              <h5 class="plant-title">Fraise Gariguette</h5>
-              <p class="plant-subtitle">Variété précoce au goût intense</p>
-              <div class="plant-features">
-                <span class="plant-feature"><i class="fas fa-sun"></i> Partiel</span>
-                <span class="plant-feature"><i class="fas fa-tint"></i> Modéré</span>
-                <span class="plant-feature"><i class="fas fa-thermometer-half"></i> Printemps</span>
-              </div>
-              <div class="plant-footer">
-                <div class="difficulty">
-                  <div class="difficulty-dot dot-filled"></div>
-                  <div class="difficulty-dot dot-empty"></div>
-                  <div class="difficulty-dot dot-empty"></div>
-                  <small class="ms-1">Facile</small>
-                </div>
-                <button class="btn-view">Voir détails</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="col-md-4 col-lg-3 mb-4">
-          <div class="plant-card">
-            <div class="plant-img-container">
-              <img src="https://images.unsplash.com/photo-1620633759919-9fcfdaace2a2" class="plant-img" alt="Peas">
-              <div class="plant-category">Légumineuse</div>
-            </div>
-            <div class="plant-body">
-              <h5 class="plant-title">Pois mange-tout</h5>
-              <p class="plant-subtitle">Délicieux et nutritifs</p>
-              <div class="plant-features">
-                <span class="plant-feature"><i class="fas fa-sun"></i> Partiel</span>
-                <span class="plant-feature"><i class="fas fa-tint"></i> Modéré</span>
-                <span class="plant-feature"><i class="fas fa-thermometer-half"></i> Printemps</span>
-              </div>
-              <div class="plant-footer">
-                <div class="difficulty">
-                  <div class="difficulty-dot dot-filled"></div>
-                  <div class="difficulty-dot dot-filled"></div>
-                  <div class="difficulty-dot dot-empty"></div>
-                  <small class="ms-1">Modéré</small>
-                </div>
-                <button class="btn-view">Voir détails</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="col-md-4 col-lg-3 mb-4">
-          <div class="plant-card">
-            <div class="plant-img-container">
-              <img src="https://images.unsplash.com/photo-1595856619767-a1d86c4147b6" class="plant-img" alt="Corn">
-              <div class="plant-category">Céréale</div>
-            </div>
-            <div class="plant-body">
-              <h5 class="plant-title">Maïs doux</h5>
-              <p class="plant-subtitle">Variété sucrée idéale pour la consommation fraîche</p>
-              <div class="plant-features">
-                <span class="plant-feature"><i class="fas fa-sun"></i> Plein soleil</span>
-                <span class="plant-feature"><i class="fas fa-tint"></i> Élevé</span>
-                <span class="plant-feature"><i class="fas fa-thermometer-half"></i> Été</span>
-              </div>
-              <div class="plant-footer">
-                <div class="difficulty">
-                  <div class="difficulty-dot dot-filled"></div>
-                  <div class="difficulty-dot dot-filled"></div>
-                  <div class="difficulty-dot dot-empty"></div>
-                  <small class="ms-1">Modéré</small>
-                </div>
-                <button class="btn-view">Voir détails</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="col-md-4 col-lg-3 mb-4">
-          <div class="plant-card">
-            <div class="plant-img-container">
-              <img src="https://images.unsplash.com/photo-1589971051018-a97762595fcd" class="plant-img" alt="Cherry tomatoes">
-              <div class="plant-category">Fruit</div>
-            </div>
-            <div class="plant-body">
-              <h5 class="plant-title">Tomate cerise</h5>
-              <p class="plant-subtitle">Petits fruits sucrés et productifs</p>
-              <div class="plant-features">
-                <span class="plant-feature"><i class="fas fa-sun"></i> Plein soleil</span>
-                <span class="plant-feature"><i class="fas fa-tint"></i> Modéré</span>
-                <span class="plant-feature"><i class="fas fa-thermometer-half"></i> Été</span>
-              </div>
-              <div class="plant-footer">
-                <div class="difficulty">
-                  <div class="difficulty-dot dot-filled"></div>
-                  <div class="difficulty-dot dot-empty"></div>
-                  <div class="difficulty-dot dot-empty"></div>
-                  <small class="ms-1">Facile</small>
-                </div>
-                <button class="btn-view">Voir détails</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="col-md-4 col-lg-3 mb-4">
-          <div class="plant-card">
-            <div class="plant-img-container">
-              <img src="https://images.unsplash.com/photo-1587049152875-71865c0197da" class="plant-img" alt="Beans">
-              <div class="plant-category">Légumineuse</div>
-            </div>
-            <div class="plant-body">
-              <h5 class="plant-title">Haricots verts</h5>
-              <p class="plant-subtitle">Variété naine facile à cultiver</p>
-              <div class="plant-features">
-                <span class="plant-feature"><i class="fas fa-sun"></i> Partiel</span>
-                <span class="plant-feature"><i class="fas fa-tint"></i> Modéré</span>
-                <span class="plant-feature"><i class="fas fa-thermometer-half"></i> Été</span>
-              </div>
-              <div class="plant-footer">
-                <div class="difficulty">
-                  <div class="difficulty-dot dot-filled"></div>
-                  <div class="difficulty-dot dot-empty"></div>
-                  <div class="difficulty-dot dot-empty"></div>
-                  <small class="ms-1">Facile</small>
-                </div>
-                <button class="btn-view">Voir détails</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- Les cartes de plantes seront chargées ici dynamiquement -->
       </div>
 
-
+      <!-- Pagination -->
       <div class="pagination-container d-flex justify-content-center my-4">
         <nav aria-label="Plant results pages">
-          <ul class="pagination">
-            <li class="page-item disabled">
-              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                <i class="fas fa-chevron-left"></i>
-              </a>
-            </li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#">
-                <i class="fas fa-chevron-right"></i>
-              </a>
-            </li>
+          <ul class="pagination" id="pagination">
+            <!-- La pagination sera générée dynamiquement -->
           </ul>
         </nav>
       </div>
-      
       
       <!-- No Results Message - Initially Hidden -->
       <div id="noResults" class="no-results" style="display: none;">
         <i class="fas fa-leaf fa-3x text-primary mb-3"></i>
         <h4>Aucune plante trouvée</h4>
-        <p class="text-muted">Essayez de modifier vos critères de recherche ou d'ajouter une nouvelle plante.</p>
-        <a href="planet_from.html" class="btn btn-primary mt-3">
-          <i class="fas fa-plus me-2"></i>Ajouter une plante
-        </a>
+        <p class="text-muted">Essayez de modifier vos critères de recherche.</p>
       </div>
       
-      <!-- Loading Indicator - Initially Hidden -->
+      <!-- Loading Indicator -->
       <div id="loadingIndicator" style="display: none;">
         <div class="loading-spinner"></div>
         <p class="text-center text-muted">Chargement des plantes...</p>
       </div>
     </div>
 
-    <script src="assets/js/include.js"></script>
-    
     <script>
-      // Filter by category
-      document.querySelectorAll('.filter-badge').forEach(badge => {
-        badge.addEventListener('click', function() {
-          // Remove active class from all badges
-          document.querySelectorAll('.filter-badge').forEach(b => {
-            b.classList.remove('active');
-          });
-          
-          // Add active class to clicked badge
-          this.classList.add('active');
-          
-          // Get selected category
-          const category = this.getAttribute('data-category');
-          
-          // Filter plants
-          filterPlants();
-        });
-      });
-      
-      // Search functionality
-      const searchInput = document.getElementById('searchInput');
-      searchInput.addEventListener('input', filterPlants);
-      
-      function filterPlants() {
-        const searchTerm = searchInput.value.toLowerCase();
-        const selectedCategory = document.querySelector('.filter-badge.active').getAttribute('data-category');
-        const plantCards = document.querySelectorAll('.plant-card');
-        let visibleCount = 0;
+      // Variables globales
+      let currentPage = 1;
+      let totalPages = 1;
+      let currentCategory = 'all';
+      let currentSearchTerm = '';
+      let totalItems = 0;
+
+      document.addEventListener('DOMContentLoaded', function() {
+        // Charger les plantes initiales
+        loadPlants();
         
-        plantCards.forEach(card => {
-          const cardContainer = card.closest('.col-md-4');
-          const plantTitle = card.querySelector('.plant-title').textContent.toLowerCase();
-          const plantCategory = card.querySelector('.plant-category').textContent;
-          const plantDescription = card.querySelector('.plant-subtitle').textContent.toLowerCase();
+        // Configurer les écouteurs d'événements
+        setupEventListeners();
+      });
+
+      function setupEventListeners() {
+        // Recherche avec debounce pour éviter trop de requêtes
+        let searchTimeout;
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+          clearTimeout(searchTimeout);
+          currentSearchTerm = e.target.value.trim();
+          currentPage = 1;
           
-          // Check if plant matches search term and category
-          const matchesSearch = plantTitle.includes(searchTerm) || plantDescription.includes(searchTerm);
-          const matchesCategory = selectedCategory === 'all' || plantCategory === selectedCategory;
-          
-          // Show or hide plant card
-          if (matchesSearch && matchesCategory) {
-            cardContainer.style.display = 'block';
-            visibleCount++;
-          } else {
-            cardContainer.style.display = 'none';
+          searchTimeout = setTimeout(() => {
+            loadPlants();
+          }, 500);
+        });
+
+        // Filtres de catégorie
+        document.querySelectorAll('.filter-badge').forEach(badge => {
+          badge.addEventListener('click', function() {
+            document.querySelectorAll('.filter-badge').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentCategory = this.dataset.category;
+            currentPage = 1;
+            loadPlants();
+          });
+        });
+
+        // Pagination - délégation d'événements
+        document.getElementById('pagination').addEventListener('click', function(e) {
+          if (e.target.classList.contains('page-link')) {
+            e.preventDefault();
+            handlePaginationClick(e.target);
           }
         });
-        
-        // Show/hide no results message
-        document.getElementById('noResults').style.display = visibleCount === 0 ? 'block' : 'none';
       }
-      
 
+      function handlePaginationClick(target) {
+        const pageItem = target.parentElement;
+        if (pageItem.classList.contains('disabled'));
+        
+        if (target.querySelector('.fa-chevron-left')) {
+          if (currentPage > 1) currentPage--;
+        } else if (target.querySelector('.fa-chevron-right')) {
+          if (currentPage < totalPages) currentPage++;
+        } else {
+          currentPage = parseInt(target.textContent);
+        }
+        
+        loadPlants();
+      }
 
-    
-
-
-
-    </script>
-
-
-
-    <script>
-        // Pagination functionality
-        document.querySelectorAll('.pagination .page-link').forEach(pageLink => {
-        pageLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Don't do anything for disabled links
-            if (this.parentElement.classList.contains('disabled')) {
-            return;
+      function loadPlants() {
+        showLoading(true);
+        
+        let apiUrl;
+        if (currentSearchTerm) {
+          apiUrl = `../backend/api/recherche.php?libelle=${encodeURIComponent(currentSearchTerm)}`;
+        } else if (currentCategory !== 'all') {
+          apiUrl = `../backend/api/categories.php?categorie=${encodeURIComponent(currentCategory)}&page=${currentPage}`;
+        } else {
+          apiUrl = `../backend/api/plantes.php?page=${currentPage}`;
+        }
+        
+        fetch(apiUrl)
+          .then(response => {
+            if (!response.ok) throw new Error('Erreur réseau');
+            return response.json();
+          })
+          .then(data => {
+            if (data.status === 'success') {
+              renderPlants(data.data);
+              
+              // Pour la pagination, on utilise soit le total de l'API, soit on compte les résultats
+              if (data.total) {
+                totalItems = data.total;
+              } else {
+                totalItems = data.data.length;
+              }
+              
+              // Pour les résultats de recherche, pas de pagination
+              if (currentSearchTerm) {
+                document.getElementById('pagination').style.display = 'none';
+              } else {
+                document.getElementById('pagination').style.display = 'flex';
+                updatePagination(totalItems, data.limit || 8);
+              }
+            } else {
+              showNoResults();
             }
-            
-            // Remove active class from all page items
-            document.querySelectorAll('.pagination .page-item').forEach(item => {
-            item.classList.remove('active');
-            });
-            
-            // Add active class to clicked page item
-            this.parentElement.classList.add('active');
-            
-            // In a real app, you would load the corresponding page data here
-            // For example: loadPage(pageNumber);
-            
-            // Enable/disable previous/next buttons based on current page
-            const currentPage = parseInt(this.textContent) || 1;
-            const prevPageItem = document.querySelector('.pagination .page-item:first-child');
-            const nextPageItem = document.querySelector('.pagination .page-item:last-child');
-            
-            prevPageItem.classList.toggle('disabled', currentPage === 1);
-            nextPageItem.classList.toggle('disabled', currentPage === 3); // Assuming 3 pages total
-            
-            // Scroll to top of results
-            document.getElementById('plantsContainer').scrollIntoView({ behavior: 'smooth' });
-        });
-        });
+          })
+          .catch(error => {
+            console.error('Erreur:', error);
+            showNoResults();
+          })
+          .finally(() => showLoading(false));
+      }
+
+      function renderPlants(plants) {
+        const container = document.getElementById('plantsContainer');
+        
+        if (!plants || plants.length === 0) {
+          showNoResults();
+          return;
+        }
+        
+        container.innerHTML = plants.map(plant => `
+          <div class="col-md-4 col-lg-3 mb-4">
+            <div class="plant-card">
+              <div class="plant-img-container">
+                <img src="${plant.image_url || 'https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'}" 
+                     class="plant-img" 
+                     alt="${plant.libelle}">
+                <div class="plant-category">${plant.categorie || 'Non spécifié'}</div>
+              </div>
+              <div class="plant-body">
+                <h5 class="plant-title">${plant.libelle}</h5>
+                <p class="plant-subtitle">${plant.utilisation_recommandee || 'Aucune description disponible.'}</p>
+                <div class="plant-features">
+                  <span class="plant-feature"><i class="fas fa-sun"></i> ${plant.luminosite || 'Non spécifié'}</span>
+                  <span class="plant-feature"><i class="fas fa-tint"></i> ${plant.frequence_arrosage || 'Non spécifié'}</span>
+                  <span class="plant-feature"><i class="fas fa-thermometer-half"></i> ${plant.saison_adequate || 'Non spécifié'}</span>
+                </div>
+                <div class="plant-footer">
+                  <div class="difficulty">
+                    ${renderDifficultyDots(plant.niveau_d_entretien)}
+                    <small class="ms-1">${getDifficultyText(plant.niveau_d_entretien)}</small>
+                  </div>
+                  <a href="frontdez/detail.html?id=${plant.id_plant}" class="btn-view">Voir détails</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+        
+        document.getElementById('noResults').style.display = 'none';
+      }
+
+      function renderDifficultyDots(level) {
+        let dots = '';
+        const difficulty = getDifficultyLevel(level);
+        
+        for (let i = 1; i <= 3; i++) {
+          dots += `<div class="difficulty-dot ${i <= difficulty ? 'dot-filled' : 'dot-empty'}"></div>`;
+        }
+        
+        return dots;
+      }
+
+      function getDifficultyLevel(level) {
+        if (!level) return 1;
+        level = level.toLowerCase();
+        
+        if (level.includes('facile') || level.includes('easy')) return 1;
+        if (level.includes('moyen') || level.includes('modéré') || level.includes('medium')) return 2;
+        if (level.includes('difficile') || level.includes('hard')) return 3;
+        
+        return 1;
+      }
+
+      function getDifficultyText(level) {
+        if (!level) return 'Facile';
+        level = level.toLowerCase();
+        
+        if (level.includes('facile') || level.includes('easy')) return 'Facile';
+        if (level.includes('moyen') || level.includes('modéré') || level.includes('medium')) return 'Modéré';
+        if (level.includes('difficile') || level.includes('hard')) return 'Difficile';
+        
+        return 'Facile';
+      }
+
+      function updatePagination(totalItems, itemsPerPage = 8) {
+        totalPages = Math.ceil(totalItems / itemsPerPage);
+        const pagination = document.getElementById('pagination');
+        
+        if (totalPages <= 1) {
+          pagination.innerHTML = '';
+          return;
+        }
+        
+        let paginationHtml = `
+          <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+            <a class="page-link" href="#"><i class="fas fa-chevron-left"></i></a>
+          </li>
+        `;
+        
+        // Afficher jusqu'à 5 pages autour de la page courante
+        let startPage = Math.max(1, currentPage - 2);
+        let endPage = Math.min(totalPages, currentPage + 2);
+        
+        if (currentPage <= 3) {
+          endPage = Math.min(5, totalPages);
+        }
+        
+        if (currentPage >= totalPages - 2) {
+          startPage = Math.max(1, totalPages - 4);
+        }
+        
+        // Bouton pour la première page
+        if (startPage > 1) {
+          paginationHtml += `
+            <li class="page-item ${currentPage === 1 ? 'active' : ''}">
+              <a class="page-link" href="#">1</a>
+            </li>
+          `;
+          if (startPage > 2) {
+            paginationHtml += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+          }
+        }
+        
+        // Pages principales
+        for (let i = startPage; i <= endPage; i++) {
+          paginationHtml += `
+            <li class="page-item ${currentPage === i ? 'active' : ''}">
+              <a class="page-link" href="#">${i}</a>
+            </li>
+          `;
+        }
+        
+        // Bouton pour la dernière page
+        if (endPage < totalPages) {
+          if (endPage < totalPages - 1) {
+            paginationHtml += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+          }
+          paginationHtml += `
+            <li class="page-item ${currentPage === totalPages ? 'active' : ''}">
+              <a class="page-link" href="#">${totalPages}</a>
+            </li>
+          `;
+        }
+        
+        paginationHtml += `
+          <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+            <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
+          </li>
+        `;
+        
+        pagination.innerHTML = paginationHtml;
+      }
+
+      function showLoading(show) {
+        document.getElementById('loadingIndicator').style.display = show ? 'block' : 'none';
+        if (show) {
+          document.getElementById('noResults').style.display = 'none';
+        }
+      }
+
+      function showNoResults() {
+        document.getElementById('plantsContainer').innerHTML = '';
+        document.getElementById('noResults').style.display = 'block';
+        document.getElementById('pagination').innerHTML = '';
+      }
     </script>
-
-
-
 </body>
 </html>

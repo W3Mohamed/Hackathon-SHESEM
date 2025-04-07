@@ -4,7 +4,7 @@
 
   // Récupérer les paramètres de la requête GET
   $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;  // Si page n'est pas défini, on prend 1 par défaut
-  $limit = 10;  // Le nombre d'éléments par page est défini à 10
+  $limit = 8;  // Le nombre d'éléments par page est défini à 10
 
   // Calculer l'offset pour la pagination
   $offset = ($page - 1) * $limit;
