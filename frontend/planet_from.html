@@ -1,5 +1,5 @@
 <!-- 
- $required = ['categorie', {Légume, Fruit, Céréale, Légumineuse}
+ $ = ['categorie', {Légume, Fruit, Céréale, Légumineuse}
         'superficie',    
         'saison_adequate',  {Printemps, Automne, Été, Hiver}
         'luminosite',    {Plein soleil,Mi-ombre}
@@ -10,7 +10,6 @@
         'niveau_d_entretien', 
         'type_de_culture']; 
 -->
-
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -140,10 +139,10 @@
                     <h2>Plant Information Form</h2>
                 </div>
                 <div class="card-body">
-                    <form method="POST" id="planet_form">
+                    <form method="POST" id="planet_form" action="">
                         <div class="mb-3">
                             <label for="categorie" class="form-label">Catégorie de plante</label>
-                            <select class="form-select" id="categorie" name="categorie" required>
+                            <select class="form-select" id="categorie" name="categorie" >
                                 <option value="" selected disabled>Choisir une catégorie</option>
                                 <option value="Légumes">Fruit</option>
                                 <option value="Fruits">Céréale</option>
@@ -155,14 +154,14 @@
                         <div id="step-2" class="form-step" style="display: none;">
                             <div class="mb-3">
                                 <label for="superficie" class="form-label">Superficie</label>
-                                <input type="number" class="form-control" id="superficie" name="superficie" placeholder="en m²" required>
+                                <input type="number" class="form-control" id="superficie" name="superficie" placeholder="en m²" >
                             </div>
                         </div>
                         
                         <div id="step-3" class="form-step" style="display: none;">
                             <div class="mb-3">
                                 <label for="saison_adequate" class="form-label">Saison adéquate</label>
-                                <select class="form-select" id="saison_adequate" name="saison_adequate" required>
+                                <select class="form-select" id="saison_adequate" name="saison_adequate" >
                                     <option value="" selected disabled>Choisir une saison</option>
                                     <option value="Spring">Printemps</option>
                                     <option value="Summer">Automne</option>
@@ -175,7 +174,7 @@
                         <div id="step-4" class="form-step" style="display: none;">
                             <div class="mb-3">
                                 <label for="luminosite" class="form-label">Luminosité</label>
-                                <select class="form-select" id="luminosite" name="luminosite" required>
+                                <select class="form-select" id="luminosite" name="luminosite" >
                                     <option value="" selected disabled>Choisir un niveau de luminosité</option>
                                     <option value="Full Sun">Plein soleil</option>
                                     <option value="Partial Sun">Mi-ombre</option>
@@ -186,7 +185,7 @@
                         <div id="step-5" class="form-step" style="display: none;">
                             <div class="mb-3">
                                 <label for="type_de_sol" class="form-label">Type de sol</label>
-                                <select class="form-select" id="type_de_sol" name="type_de_sol" required>
+                                <select class="form-select" id="type_de_sol" name="type_de_sol" >
                                     <option value="" selected disabled>Choisir un type de sol</option>
                                     <option value="Sandy">sableux</option>
                                     <option value="Clay">Riche en humus</option>
@@ -200,7 +199,7 @@
                         <div id="step-6" class="form-step" style="display: none;">
                             <div class="mb-3">
                                 <label for="systeme_d_irrigation" class="form-label">Système d'irrigation</label>
-                                <select class="form-select" id="systeme_d_irrigation" name="systeme_d_irrigation" required>
+                                <select class="form-select" id="systeme_d_irrigation" name="systeme_d_irrigation" >
                                     <option value="" selected disabled>Choisir un système d'irrigation</option>
                                     <option value="Drip">Goutte à goutte</option>
                                     <option value="Sprinkler">Arrosage manuel</option>
@@ -214,7 +213,7 @@
                         <div id="step-7" class="form-step" style="display: none;">
                             <div class="mb-3">
                                 <label for="resistance_au_froid" class="form-label">Résistance au froid</label>
-                                <select class="form-select" id="resistance_au_froid" name="resistance_au_froid" required>
+                                <select class="form-select" id="resistance_au_froid" name="resistance_au_froid" >
                                     <option value="" selected disabled>Choisir un niveau de résistance</option>
                                     <option value="Hardy">Résistant</option>
                                     <option value="Semi-Hardy">Sensible</option>
@@ -225,7 +224,7 @@
                         <div id="step-8" class="form-step" style="display: none;">
                             <div class="mb-3">
                                 <label for="resistance_aux_pests" class="form-label">Résistance aux pests</label>
-                                <select class="form-select" id="resistance_aux_pests" name="resistance_aux_pests" required>
+                                <select class="form-select" id="resistance_aux_pests" name="resistance_aux_pests" >
                                     <option value="" selected disabled>Choisir un niveau de résistance</option>
                                     <option value="High">Sensible</option>
                                     <option value="Medium">Résistant</option>
@@ -238,7 +237,7 @@
                         <div id="step-9" class="form-step" style="display: none;">
                             <div class="mb-3">
                                 <label for="niveau_d_entretien" class="form-label">Niveau d'entretien</label>
-                                <select class="form-select" id="niveau_d_entretien" name="niveau_d_entretien" required>
+                                <select class="form-select" id="niveau_d_entretien" name="niveau_d_entretien" >
                                     <option value="" selected disabled>Choisir un niveau d'entretien</option>
                                     <option value="Low">Facile</option>
                                     <option value="Medium">Modéré</option>
@@ -251,7 +250,7 @@
                         <div id="step-10" class="form-step" style="display: none;">
                             <div class="mb-3">
                                 <label for="type_de_culture" class="form-label">Type de culture</label>
-                                <select class="form-select" id="type_de_culture" name="type_de_culture" required>
+                                <select class="form-select" id="type_de_culture" name="type_de_culture" >
                                     <option value="" selected disabled>Choisir un type de culture</option>
                                     <option value="Traditional">Plein terre</option>
                                     <option value="Raised Bed">Pot ou pleine terre</option>
@@ -260,6 +259,7 @@
                                 </select>
                             </div>
                         </div>
+                        <button type="submit" id="actualSubmit" style="display: none;"></button>
                     </form>
                 </div>
             </div>
@@ -404,7 +404,7 @@
                         <p>Specify how much care your plant requires:</p>
                         <ul>
                             <li><strong>Low:</strong> Minimal attention needed</li>
-                            <li><strong>Medium:</strong> Regular maintenance required</li>
+                            <li><strong>Medium:</strong> Regular maintenance </li>
                             <li><strong>High:</strong> Frequent attention and care needed</li>
                         </ul>
                         <div class="alert alert-info">
@@ -445,6 +445,26 @@
         </div>
     </div>
 </div>
+
+
+<!-- <script>
+    // Add this to your existing script section
+    document.getElementById('planet_form').addEventListener('submit', function(event) {
+        // For testing only - remove this line when your backend is ready
+        event.preventDefault();
+        
+        console.log('Form submitted!');
+        alert('Form submitted successfully!');
+        
+        // Log all form data
+        const formData = new FormData(this);
+        for (const pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+    });
+</script> -->
+
+
 
 <script>
     // Form navigation variables

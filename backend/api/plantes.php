@@ -1,10 +1,10 @@
-    <?php
+<?php
     header('Content-Type: application/json');
     include_once('../db.php');
 
     // Pagination : Récupérer la page et la limite
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;  // Si page n'est pas défini, on prend 1 par défaut
-    $limit = 10;  // Limite fixée à 10 résultats par page
+    $limit = 8;  // Limite fixée à 10 résultats par page
 
     // Calculer l'offset pour la pagination
     $offset = ($page - 1) * $limit;

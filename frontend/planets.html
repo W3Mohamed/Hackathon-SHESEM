@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GardenGrow - Your Plant Collection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+      :root {
+        --primary: #2E7D32;
+        --primary-light: #4CAF50;
+        --primary-dark: #1B5E20;    
+        --accent: #FFC107;
+        --neutral-light: #f8f9fa;
+        --neutral-medium: #dee2e6;
+        --neutral-dark: #6c757d;
+        --white: #ffffff;
+        --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        --transition: all 0.3s ease;
+      }
+      
+      body {
+        font-family: 'Nunito', sans-serif;
+        background-color: #f5f5f4;
+        background-size: 20px 20px;
+        background-position: 0 0, 10px 10px;
+        background-attachment: fixed;
+        padding-bottom: 2rem;
+      }
+      
+      .page-header {
+        background-color: var(--white);
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+      
+      .search-container {
+        background-color: var(--white);
+        border-radius: 14px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--card-shadow);
+      }
+      
+      .filter-badge {
+        background-color: var(--primary-light);
+        color: white;
+        border-radius: 30px;
+        padding: 0.5rem 1rem;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+        transition: var(--transition);
+        border: none;
+      }
+      
+      .filter-badge:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-2px);
+      }
+      
+      .filter-badge.active {
+        background-color: var(--accent);
+        color: #212529;
+      }
+      
+      .search-input {
+        border-radius: 30px;
+        padding: 0.75rem 1.5rem;
+        border: 1px solid var(--neutral-medium);
+        transition: var(--transition);
+      }
+      
+      .search-input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
+      }
+      
+      .plant-card {
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        transition: var(--transition);
+        height: 100%;
+        border: none;
+      }
+      
+      .plant-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+      }
+      
+      .plant-img-container {
+        height: 200px;
+        overflow: hidden;
+        position: relative;
+      }
+      
+      .plant-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition);
+      }
+      
+      .plant-card:hover .plant-img {
+        transform: scale(1.05);
+      }
+      
+      .plant-category {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: var(--primary);
+        color: white;
+        border-radius: 30px;
+        padding: 0.3rem 0.8rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+      
+      .plant-body {
+        padding: 1.5rem;
+      }
+      
+      .plant-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin-bottom: 0.5rem;
+      }
+      
+      .plant-subtitle {
+        color: var(--neutral-dark);
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+      }
+      
+      .plant-features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      .plant-feature {
+        background-color: rgba(76, 175, 80, 0.1);
+        color: var(--primary-dark);
+        border-radius: 4px;
+        padding: 0.2rem 0.6rem;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+      }
+      
+      .plant-feature i {
+        margin-right: 0.25rem;
+        font-size: 0.75rem;
+      }
+      
+      .plant-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid var(--neutral-light);
+        padding-top: 1rem;
+      }
+      
+      .btn-view {
+        background-color: var(--primary);
+        color: white;
+        border-radius: 30px;
+        padding: 0.5rem 1.25rem;
+        font-weight: 600;
+        border: none;
+        transition: var(--transition);
+      }
+      
+      .btn-view:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-2px);
+      }
+      
+      .difficulty {
+        display: flex;
+        align-items: center;
+      }
+      
+      .difficulty-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 3px;
+      }
+      
+      .dot-filled {
+        background-color: var(--primary);
+      }
+      
+      .dot-empty {
+        background-color: var(--neutral-medium);
+      }
+      
+      .no-results {
+        background-color: var(--white);
+        border-radius: 14px;
+        padding: 3rem;
+        text-align: center;
+        box-shadow: var(--card-shadow);
+      }
+      
+      .loading-spinner {
+        width: 3rem;
+        height: 3rem;
+        border: 5px solid var(--neutral-light);
+        border-top: 5px solid var(--primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 2rem auto;
+      }
+
+      .pagination-container {
+          margin: 2rem 0;
+      }
+      
+      .pagination .page-link {
+          border-radius: 8px;
+          margin: 0 3px;
+          color: var(--primary);
+          border: 1px solid var(--neutral-medium);
+          transition: var(--transition);
+      }
+      
+      .pagination .page-item.active .page-link {
+          background-color: var(--primary);
+          border-color: var(--primary);
+          color: white;
+      }
+      
+      .pagination .page-link:hover:not(.active) {
+          background-color: var(--neutral-light);
+          transform: translateY(-2px);
+      }
+      
+      .pagination .page-item:first-child .page-link,
+      .pagination .page-item:last-child .page-link {
+          padding: 0.5rem 0.75rem;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      @media (max-width: 767.98px) {
+        .plant-img-container {
+          height: 160px;
+        }
+        
+        .search-container {
+          padding: 1rem;
+        }
+      }
+    </style>
+</head>
+<body>
+    <!-- Header placeholder -->
+    <div id="header-placeholder"></div> 
+    <div class="container mt-4">
+      <!-- Search and Filters -->
+      <div class="search-container mb-4">
+        <div class="row mb-3">
+          <div class="col">
+            <input type="text" id="searchInput" class="form-control search-input" placeholder="Rechercher des plantes...">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <h6 class="mb-2">Filtrer par catégorie:</h6>
+            <div class="filter-badges" id="categoryFilters">
+              <button class="filter-badge active" data-category="all">Toutes les plantes</button>
+              <button class="filter-badge" data-category="Légumes">Légumes</button>
+              <button class="filter-badge" data-category="Fruits">Fruits</button>
+              <button class="filter-badge" data-category="Céréale">Céréale</button>
+              <button class="filter-badge" data-category="Légumineuse">Légumineuse</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Plants Grid -->
+      <div class="row" id="plantsContainer">
+        <!-- Les cartes de plantes seront chargées ici dynamiquement -->
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-container d-flex justify-content-center my-4">
+        <nav aria-label="Plant results pages">
+          <ul class="pagination" id="pagination">
+            <!-- La pagination sera générée dynamiquement -->
+          </ul>
+        </nav>
+      </div>
+      
+      <!-- No Results Message - Initially Hidden -->
+      <div id="noResults" class="no-results" style="display: none;">
+        <i class="fas fa-leaf fa-3x text-primary mb-3"></i>
+        <h4>Aucune plante trouvée</h4>
+        <p class="text-muted">Essayez de modifier vos critères de recherche.</p>
+      </div>
+      
+      <!-- Loading Indicator -->
+      <div id="loadingIndicator" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p class="text-center text-muted">Chargement des plantes...</p>
+      </div>
+    </div>
+
+    <script>
+      // Variables globales
+      let currentPage = 1;
+      let totalPages = 1;
+      let currentCategory = 'all';
+      let currentSearchTerm = '';
+      let totalItems = 0;
+
+      document.addEventListener('DOMContentLoaded', function() {
+        // Charger les plantes initiales
+        loadPlants();
+        
+        // Configurer les écouteurs d'événements
+        setupEventListeners();
+      });
+
+      function setupEventListeners() {
+        // Recherche avec debounce pour éviter trop de requêtes
+        let searchTimeout;
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+          clearTimeout(searchTimeout);
+          currentSearchTerm = e.target.value.trim();
+          currentPage = 1;
+          
+          searchTimeout = setTimeout(() => {
+            loadPlants();
+          }, 500);
+        });
+
+        // Filtres de catégorie
+        document.querySelectorAll('.filter-badge').forEach(badge => {
+          badge.addEventListener('click', function() {
+            document.querySelectorAll('.filter-badge').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentCategory = this.dataset.category;
+            currentPage = 1;
+            loadPlants();
+          });
+        });
+
+        // Pagination - délégation d'événements
+        document.getElementById('pagination').addEventListener('click', function(e) {
+          if (e.target.classList.contains('page-link')) {
+            e.preventDefault();
+            handlePaginationClick(e.target);
+          }
+        });
+      }
+
+      function handlePaginationClick(target) {
+        const pageItem = target.parentElement;
+        if (pageItem.classList.contains('disabled'));
+        
+        if (target.querySelector('.fa-chevron-left')) {
+          if (currentPage > 1) currentPage--;
+        } else if (target.querySelector('.fa-chevron-right')) {
+          if (currentPage < totalPages) currentPage++;
+        } else {
+          currentPage = parseInt(target.textContent);
+        }
+        
+        loadPlants();
+      }
+
+      function loadPlants() {
+        showLoading(true);
+        
+        let apiUrl;
+        if (currentSearchTerm) {
+          apiUrl = `../backend/api/recherche.php?libelle=${encodeURIComponent(currentSearchTerm)}`;
+        } else if (currentCategory !== 'all') {
+          apiUrl = `../backend/api/categories.php?categorie=${encodeURIComponent(currentCategory)}&page=${currentPage}`;
+        } else {
+          apiUrl = `../backend/api/plantes.php?page=${currentPage}`;
+        }
+        
+        fetch(apiUrl)
+          .then(response => {
+            if (!response.ok) throw new Error('Erreur réseau');
+            return response.json();
+          })
+          .then(data => {
+            if (data.status === 'success') {
+              renderPlants(data.data);
+              
+              // Pour la pagination, on utilise soit le total de l'API, soit on compte les résultats
+              if (data.total) {
+                totalItems = data.total;
+              } else {
+                totalItems = data.data.length;
+              }
+              
+              // Pour les résultats de recherche, pas de pagination
+              if (currentSearchTerm) {
+                document.getElementById('pagination').style.display = 'none';
+              } else {
+                document.getElementById('pagination').style.display = 'flex';
+                updatePagination(totalItems, data.limit || 8);
+              }
+            } else {
+              showNoResults();
+            }
+          })
+          .catch(error => {
+            console.error('Erreur:', error);
+            showNoResults();
+          })
+          .finally(() => showLoading(false));
+      }
+
+      function renderPlants(plants) {
+        const container = document.getElementById('plantsContainer');
+        
+        if (!plants || plants.length === 0) {
+          showNoResults();
+          return;
+        }
+        
+        container.innerHTML = plants.map(plant => `
+          <div class="col-md-4 col-lg-3 mb-4">
+            <div class="plant-card">
+              <div class="plant-img-container">
+                <img src="${plant.image_url || 'https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'}" 
+                     class="plant-img" 
+                     alt="${plant.libelle}">
+                <div class="plant-category">${plant.categorie || 'Non spécifié'}</div>
+              </div>
+              <div class="plant-body">
+                <h5 class="plant-title">${plant.libelle}</h5>
+                <p class="plant-subtitle">${plant.utilisation_recommandee || 'Aucune description disponible.'}</p>
+                <div class="plant-features">
+                  <span class="plant-feature"><i class="fas fa-sun"></i> ${plant.luminosite || 'Non spécifié'}</span>
+                  <span class="plant-feature"><i class="fas fa-tint"></i> ${plant.frequence_arrosage || 'Non spécifié'}</span>
+                  <span class="plant-feature"><i class="fas fa-thermometer-half"></i> ${plant.saison_adequate || 'Non spécifié'}</span>
+                </div>
+                <div class="plant-footer">
+                  <div class="difficulty">
+                    ${renderDifficultyDots(plant.niveau_d_entretien)}
+                    <small class="ms-1">${getDifficultyText(plant.niveau_d_entretien)}</small>
+                  </div>
+                  <a href="frontdez/detail.html?id=${plant.id_plant}" class="btn-view">Voir détails</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+        
+        document.getElementById('noResults').style.display = 'none';
+      }
+
+      function renderDifficultyDots(level) {
+        let dots = '';
+        const difficulty = getDifficultyLevel(level);
+        
+        for (let i = 1; i <= 3; i++) {
+          dots += `<div class="difficulty-dot ${i <= difficulty ? 'dot-filled' : 'dot-empty'}"></div>`;
+        }
+        
+        return dots;
+      }
+
+      function getDifficultyLevel(level) {
+        if (!level) return 1;
+        level = level.toLowerCase();
+        
+        if (level.includes('facile') || level.includes('easy')) return 1;
+        if (level.includes('moyen') || level.includes('modéré') || level.includes('medium')) return 2;
+        if (level.includes('difficile') || level.includes('hard')) return 3;
+        
+        return 1;
+      }
+
+      function getDifficultyText(level) {
+        if (!level) return 'Facile';
+        level = level.toLowerCase();
+        
+        if (level.includes('facile') || level.includes('easy')) return 'Facile';
+        if (level.includes('moyen') || level.includes('modéré') || level.includes('medium')) return 'Modéré';
+        if (level.includes('difficile') || level.includes('hard')) return 'Difficile';
+        
+        return 'Facile';
+      }
+
+      function updatePagination(totalItems, itemsPerPage = 8) {
+        totalPages = Math.ceil(totalItems / itemsPerPage);
+        const pagination = document.getElementById('pagination');
+        
+        if (totalPages <= 1) {
+          pagination.innerHTML = '';
+          return;
+        }
+        
+        let paginationHtml = `
+          <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+            <a class="page-link" href="#"><i class="fas fa-chevron-left"></i></a>
+          </li>
+        `;
+        
+        // Afficher jusqu'à 5 pages autour de la page courante
+        let startPage = Math.max(1, currentPage - 2);
+        let endPage = Math.min(totalPages, currentPage + 2);
+        
+        if (currentPage <= 3) {
+          endPage = Math.min(5, totalPages);
+        }
+        
+        if (currentPage >= totalPages - 2) {
+          startPage = Math.max(1, totalPages - 4);
+        }
+        
+        // Bouton pour la première page
+        if (startPage > 1) {
+          paginationHtml += `
+            <li class="page-item ${currentPage === 1 ? 'active' : ''}">
+              <a class="page-link" href="#">1</a>
+            </li>
+          `;
+          if (startPage > 2) {
+            paginationHtml += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+          }
+        }
+        
+        // Pages principales
+        for (let i = startPage; i <= endPage; i++) {
+          paginationHtml += `
+            <li class="page-item ${currentPage === i ? 'active' : ''}">
+              <a class="page-link" href="#">${i}</a>
+            </li>
+          `;
+        }
+        
+        // Bouton pour la dernière page
+        if (endPage < totalPages) {
+          if (endPage < totalPages - 1) {
+            paginationHtml += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+          }
+          paginationHtml += `
+            <li class="page-item ${currentPage === totalPages ? 'active' : ''}">
+              <a class="page-link" href="#">${totalPages}</a>
+            </li>
+          `;
+        }
+        
+        paginationHtml += `
+          <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+            <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
+          </li>
+        `;
+        
+        pagination.innerHTML = paginationHtml;
+      }
+
+      function showLoading(show) {
+        document.getElementById('loadingIndicator').style.display = show ? 'block' : 'none';
+        if (show) {
+          document.getElementById('noResults').style.display = 'none';
+        }
+      }
+
+      function showNoResults() {
+        document.getElementById('plantsContainer').innerHTML = '';
+        document.getElementById('noResults').style.display = 'block';
+        document.getElementById('pagination').innerHTML = '';
+      }
+    </script>
+</body>
+</html>
