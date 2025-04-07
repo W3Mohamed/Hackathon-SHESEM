@@ -688,5 +688,194 @@
             });
         });
     </script>
+
+    <!-- ajax -->
+    <script>
+    // AJAX functionality for form handling
+    $(document).ready(function() {
+        // Auto-save feature - save form data as user progresses
+        const formFields = [
+            'categorie', 'superficie', 'saison_adequate', 'luminosite', 
+            'type_de_sol', 'systeme_d_irrigation', 'resistance_au_froid',
+            'resistance_aux_pests', 'niveau_d_entretien', 'type_de_culture'
+        ];
+        
+        // Save form data to localStorage when a field changes
+        formFields.forEach(field => {
+            $(`#${field}`).on('change', function() {
+                saveFormProgress();
+            });
+        });
+        
+        // Function to save form progress
+        function saveFormProgress() {
+            const formData = {};
+            formFields.forEach(field => {
+                const value = $(`#${field}`).val();
+                if (value) {
+                    formData[field] = value;
+                }
+            });
+            
+            localStorage.setItem('gardenGrowFormData', JSON.stringify(formData));
+            console.log('Form progress saved');
+        }
+        
+        // Load saved form data when page loads
+        function loadFormProgress() {
+            const savedData = localStorage.getItem('gardenGrowFormData');
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                let furthestStep = 1;
+                
+                formFields.forEach((field, index) => {
+                    if (formData[field]) {
+                        $(`#${field}`).val(formData[field]);
+                        furthestStep = Math.max(furthestStep, index + 1);
+                    }
+                });
+                
+                // Move to the furthest completed step
+                if (furthestStep > 1) {
+                    currentStep = furthestStep;
+                    showStep(currentStep);
+                }
+                
+                console.log('Form data restored');
+            }
+        }
+        
+        // Try to load saved progress
+        loadFormProgress();
+        
+        // Override the form submission
+        $('#planet_form').on('submit', function(e) {
+            e.preventDefault();
+            submitFormWithAjax();
+        });
+        
+        // Also trigger form submission when the submit button is clicked
+        $('#submitBtn').on('click', function() {
+            submitFormWithAjax();
+        });
+        
+        // Form submission function with loading indicator
+        function submitFormWithAjax() {
+            // Show loading state
+            $('#submitBtn').html('<i class="fas fa-spinner fa-spin me-2"></i>Processing...');
+            $('#submitBtn').prop('disabled', true);
+            
+            // Get form data
+            const formData = {};
+            formFields.forEach(field => {
+                formData[field] = $(`#${field}`).val() || '';
+            });
+            
+            // Basic validation before submission
+            if (!validateForm(formData)) {
+                $('#submitBtn').html('<i class="fas fa-check-circle me-2"></i>Submit');
+                $('#submitBtn').prop('disabled', false);
+                return;
+            }
+            
+            // Send data to backend
+            $.ajax({
+                url: '../backend/api/resultats.php',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function(response) {
+                    // Clear saved form data on successful submission
+                    localStorage.removeItem('gardenGrowFormData');
+                    
+                    // Show success message
+                    showNotification('success', 'Your plant information was submitted successfully!');
+                    
+                    // Redirect after a short delay
+                    setTimeout(function() {
+                        window.location.href = 'planets.html';
+                    }, 1500);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error submitting form:', error);
+                    
+                    // Parse error message if possible
+                    let errorMsg = 'An error occurred while submitting the form.';
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.message) {
+                            errorMsg = response.message;
+                        }
+                    } catch (e) {
+                        // Use default error message
+                    }
+                    
+                    showNotification('error', errorMsg);
+                    
+                    // Reset button state
+                    $('#submitBtn').html('<i class="fas fa-check-circle me-2"></i>Submit');
+                    $('#submitBtn').prop('disabled', false);
+                }
+            });
+        }
+        
+        // Basic form validation
+        function validateForm(formData) {
+            // Check if category is selected (required field)
+            if (!formData.categorie) {
+                showNotification('error', 'Please select a plant category');
+                currentStep = 1;
+                showStep(currentStep);
+                return false;
+            }
+            
+            // More validation rules can be added here for other fields
+            
+            return true;
+        }
+        
+        // Create a notification system
+        function showNotification(type, message) {
+            // Remove any existing notifications
+            $('.form-notification').remove();
+            
+            // Create notification element
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+            const icon = type === 'success' ? 'check-circle' : 'exclamation-triangle';
+            
+            const notification = `
+                <div class="form-notification alert ${alertClass} alert-dismissible fade show mt-3" role="alert">
+                    <i class="fas fa-${icon} me-2"></i>
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+            
+            // Insert notification at the top of the form
+            $('.card-body').prepend(notification);
+            
+            // Auto-dismiss after 5 seconds
+            setTimeout(function() {
+                $('.form-notification').alert('close');
+            }, 5000);
+        }
+        
+        // Real-time field validation as user moves through steps
+        $('#nextBtn').on('click', function() {
+            const currentField = formFields[currentStep - 1];
+            const value = $(`#${currentField}`).val();
+            
+            if (!value && currentStep > 1) {
+                // Field is required; prevent moving to next step
+                showNotification('error', `Please complete the current field before continuing`);
+                return false;
+            }
+            
+            // Auto-save when moving to next step
+            saveFormProgress();
+        });
+    });
+</script>
+    
 </body>
 </html>
