@@ -30,10 +30,10 @@
     AND superficie_minimale <= :superficie
     AND saison_adequate LIKE :saison
     AND luminosite = :luminosite
-    AND type_de_sol = :type_de_sol
+    AND type_de_sol LIKE :type_de_sol
     AND systeme_d_irrigation = :systeme_d_irrigation
-    AND resistance_au_froid = :resistance_au_froid
-    AND resistance_aux_pests = :resistance_aux_pests
+    AND resistance_au_froid LIKE :resistance_au_froid
+    AND resistance_aux_pests LIKE :resistance_aux_pests
     AND niveau_d_entretien = :niveau_d_entretien
     AND type_de_culture = :type_de_culture
     LIMIT :limit OFFSET :offset";
@@ -46,10 +46,10 @@
     $stmt->bindValue(':superficie', $input['superficie']);
     $stmt->bindValue(':saison', "%" . $input['saison_adequate'] . "%");
     $stmt->bindValue(':luminosite', $input['luminosite']);
-    $stmt->bindValue(':type_de_sol', $input['type_de_sol']);
+    $stmt->bindValue(':type_de_sol', "%" . $input['type_de_sol'] . "%");
     $stmt->bindValue(':systeme_d_irrigation', $input['systeme_d_irrigation']);
-    $stmt->bindValue(':resistance_au_froid', $input['resistance_au_froid']);
-    $stmt->bindValue(':resistance_aux_pests', $input['resistance_aux_pests']);
+    $stmt->bindValue(':resistance_au_froid', "%" . $input['resistance_au_froid'] ."%");
+    $stmt->bindValue(':resistance_aux_pests', "%" . $input['resistance_aux_pests'] . "%");
     $stmt->bindValue(':niveau_d_entretien', $input['niveau_d_entretien']);
     $stmt->bindValue(':type_de_culture', $input['type_de_culture']);
     $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
