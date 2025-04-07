@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GardenGrow - Your Plant Collection</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
+      /* Le CSS reste inchangé */
       :root {
         --primary: #2E7D32;
         --primary-light: #4CAF50;
@@ -270,24 +271,13 @@
 <body>
     <!-- Header placeholder -->
     <div id="header-placeholder"></div> 
+
     <div class="container mt-4">
-      <!-- Search and Filters -->
+      <!-- Search - Suppression de la partie catégorie -->
       <div class="search-container mb-4">
         <div class="row mb-3">
           <div class="col">
             <input type="text" id="searchInput" class="form-control search-input" placeholder="Rechercher des plantes...">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <h6 class="mb-2">Filtrer par catégorie:</h6>
-            <div class="filter-badges" id="categoryFilters">
-              <button class="filter-badge active" data-category="all">Toutes les plantes</button>
-              <button class="filter-badge" data-category="Légumes">Légumes</button>
-              <button class="filter-badge" data-category="Fruits">Fruits</button>
-              <button class="filter-badge" data-category="Céréale">Céréale</button>
-              <button class="filter-badge" data-category="Légumineuse">Légumineuse</button>
-            </div>
           </div>
         </div>
       </div>
@@ -324,11 +314,16 @@
       // Variables globales
       let currentPage = 1;
       let totalPages = 1;
-      let currentCategory = 'all';
       let currentSearchTerm = '';
       let totalItems = 0;
+      const ITEMS_PER_PAGE = 8;
 
       document.addEventListener('DOMContentLoaded', function() {
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const pageParam = urlParams.get('page');
+        currentPage = pageParam ? parseInt(pageParam) : 1;
+
         // Charger les plantes initiales
         loadPlants();
         
@@ -349,85 +344,72 @@
           }, 500);
         });
 
-        // Filtres de catégorie
-        document.querySelectorAll('.filter-badge').forEach(badge => {
-          badge.addEventListener('click', function() {
-            document.querySelectorAll('.filter-badge').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            currentCategory = this.dataset.category;
-            currentPage = 1;
-            loadPlants();
-          });
-        });
-
         // Pagination - délégation d'événements
         document.getElementById('pagination').addEventListener('click', function(e) {
-          if (e.target.classList.contains('page-link')) {
+          if (e.target.classList.contains('page-link') || e.target.parentElement.classList.contains('page-link')) {
             e.preventDefault();
-            handlePaginationClick(e.target);
+            const target = e.target.classList.contains('page-link') ? e.target : e.target.parentElement;
+            handlePaginationClick(target);
           }
         });
       }
-
       function handlePaginationClick(target) {
-        const pageItem = target.parentElement;
-        if (pageItem.classList.contains('disabled'));
-        
-        if (target.querySelector('.fa-chevron-left')) {
-          if (currentPage > 1) currentPage--;
-        } else if (target.querySelector('.fa-chevron-right')) {
-          if (currentPage < totalPages) currentPage++;
-        } else {
-          currentPage = parseInt(target.textContent);
-        }
-        
-        loadPlants();
+          const pageItem = target.parentElement;
+          if (pageItem.classList.contains('disabled')) return;
+          
+          if (target.querySelector('.fa-chevron-left')) {
+              if (currentPage > 1) currentPage--;
+          } else if (target.querySelector('.fa-chevron-right')) {
+              if (currentPage < totalPages) currentPage++;
+          } else {
+              currentPage = parseInt(target.textContent);
+          }
+          
+          // Mettre à jour l'URL sans recharger la page
+          updateUrl();
+          loadPlants();
       }
 
+    function updateUrl() {
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.set('page', currentPage);
+        window.history.pushState({}, '', newUrl);
+    }
+
       function loadPlants() {
-        showLoading(true);
-        
-        let apiUrl;
-        if (currentSearchTerm) {
-          apiUrl = `../backend/api/recherche.php?libelle=${encodeURIComponent(currentSearchTerm)}`;
-        } else if (currentCategory !== 'all') {
-          apiUrl = `../backend/api/categories.php?categorie=${encodeURIComponent(currentCategory)}&page=${currentPage}`;
-        } else {
-          apiUrl = `../backend/api/plantes.php?page=${currentPage}`;
-        }
-        
-        fetch(apiUrl)
-          .then(response => {
-            if (!response.ok) throw new Error('Erreur réseau');
-            return response.json();
-          })
-          .then(data => {
-            if (data.status === 'success') {
-              renderPlants(data.data);
-              
-              // Pour la pagination, on utilise soit le total de l'API, soit on compte les résultats
-              if (data.total) {
-                totalItems = data.total;
-              } else {
-                totalItems = data.data.length;
-              }
-              
-              // Pour les résultats de recherche, pas de pagination
-              if (currentSearchTerm) {
-                document.getElementById('pagination').style.display = 'none';
-              } else {
-                document.getElementById('pagination').style.display = 'flex';
-                updatePagination(totalItems, data.limit || 8);
-              }
-            } else {
-              showNoResults();
-            }
-          })
-          .catch(error => {
-            console.error('Erreur:', error);
-            showNoResults();
-          })
-          .finally(() => showLoading(false));
+          showLoading(true);
+          
+          let apiUrl;
+          if (currentSearchTerm) {
+              apiUrl = `../backend/api/recherche.php?libelle=${encodeURIComponent(currentSearchTerm)}`;
+          } else {
+              apiUrl = `../backend/api/plantes.php?page=${currentPage}`;
+          }
+          
+          fetch(apiUrl)
+              .then(response => {
+                  if (!response.ok) throw new Error('Erreur réseau');
+                  return response.json();
+              })
+              .then(data => {
+                  console.log('Données API:', data);
+                  if (data.status === 'success') {
+                      renderPlants(data.data);
+                      
+                      // Toujours mettre à jour la pagination sauf pour les recherches
+                      if (!currentSearchTerm && data.total) {
+                          totalItems = data.total;
+                          updatePagination(totalItems, data.limit || ITEMS_PER_PAGE);
+                      }
+                  } else {
+                      showNoResults();
+                  }
+              })
+              .catch(error => {
+                  console.error('Erreur:', error);
+                  showNoResults();
+              })
+              .finally(() => showLoading(false));
       }
 
       function renderPlants(plants) {
@@ -504,72 +486,80 @@
       }
 
       function updatePagination(totalItems, itemsPerPage = 8) {
-        totalPages = Math.ceil(totalItems / itemsPerPage);
-        const pagination = document.getElementById('pagination');
-        
-        if (totalPages <= 1) {
-          pagination.innerHTML = '';
-          return;
-        }
-        
-        let paginationHtml = `
-          <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
-            <a class="page-link" href="#"><i class="fas fa-chevron-left"></i></a>
-          </li>
-        `;
-        
-        // Afficher jusqu'à 5 pages autour de la page courante
-        let startPage = Math.max(1, currentPage - 2);
-        let endPage = Math.min(totalPages, currentPage + 2);
-        
-        if (currentPage <= 3) {
-          endPage = Math.min(5, totalPages);
-        }
-        
-        if (currentPage >= totalPages - 2) {
-          startPage = Math.max(1, totalPages - 4);
-        }
-        
-        // Bouton pour la première page
-        if (startPage > 1) {
-          paginationHtml += `
-            <li class="page-item ${currentPage === 1 ? 'active' : ''}">
-              <a class="page-link" href="#">1</a>
-            </li>
-          `;
-          if (startPage > 2) {
-            paginationHtml += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+          totalPages = Math.ceil(totalItems / itemsPerPage);
+          const pagination = document.getElementById('pagination');
+          
+          console.log(`Updating pagination: totalItems=${totalItems}, itemsPerPage=${itemsPerPage}, totalPages=${totalPages}`);
+          
+          if (totalPages <= 1) {
+              pagination.innerHTML = '';
+              return;
           }
-        }
-        
-        // Pages principales
-        for (let i = startPage; i <= endPage; i++) {
-          paginationHtml += `
-            <li class="page-item ${currentPage === i ? 'active' : ''}">
-              <a class="page-link" href="#">${i}</a>
-            </li>
+          
+          let paginationHtml = `
+              <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                  <a class="page-link" href="#" aria-label="Previous">
+                      <i class="fas fa-chevron-left"></i>
+                  </a>
+              </li>
           `;
-        }
-        
-        // Bouton pour la dernière page
-        if (endPage < totalPages) {
-          if (endPage < totalPages - 1) {
-            paginationHtml += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+          
+          // Afficher toujours les 5 premières pages puis "..."
+          const maxVisiblePages = 5;
+          let startPage = Math.max(1, currentPage - 2);
+          let endPage = Math.min(totalPages, currentPage + 2);
+          
+          if (currentPage <= 3) {
+              endPage = Math.min(maxVisiblePages, totalPages);
           }
+          
+          if (currentPage >= totalPages - 2) {
+              startPage = Math.max(1, totalPages - 4);
+          }
+          
+          // Bouton pour la première page
+          if (startPage > 1) {
+              paginationHtml += `
+                  <li class="page-item ${currentPage === 1 ? 'active' : ''}">
+                      <a class="page-link" href="#">1</a>
+                  </li>
+              `;
+              if (startPage > 2) {
+                  paginationHtml += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+              }
+          }
+          
+          // Pages principales
+          for (let i = startPage; i <= endPage; i++) {
+              paginationHtml += `
+                  <li class="page-item ${currentPage === i ? 'active' : ''}">
+                      <a class="page-link" href="#">${i}</a>
+                  </li>
+              `;
+          }
+          
+          // Bouton pour la dernière page
+          if (endPage < totalPages) {
+              if (endPage < totalPages - 1) {
+                  paginationHtml += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+              }
+              paginationHtml += `
+                  <li class="page-item ${currentPage === totalPages ? 'active' : ''}">
+                      <a class="page-link" href="#">${totalPages}</a>
+                  </li>
+              `;
+          }
+          
           paginationHtml += `
-            <li class="page-item ${currentPage === totalPages ? 'active' : ''}">
-              <a class="page-link" href="#">${totalPages}</a>
-            </li>
+              <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                  <a class="page-link" href="#" aria-label="Next">
+                      <i class="fas fa-chevron-right"></i>
+                  </a>
+              </li>
           `;
-        }
-        
-        paginationHtml += `
-          <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
-            <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-          </li>
-        `;
-        
-        pagination.innerHTML = paginationHtml;
+          
+          pagination.innerHTML = paginationHtml;
+          console.log('Pagination HTML:', paginationHtml);
       }
 
       function showLoading(show) {
