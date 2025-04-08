@@ -1,51 +1,82 @@
-<!-- 
- $ = ['categorie', {Légume, Fruit, Céréale, Légumineuse}
-        'superficie',    
-        'saison_adequate',  {Printemps, Automne, Été, Hiver}
-        'luminosite',    {Plein soleil,Mi-ombre}
-        'type_de_sol', 
-        'systeme_d_irrigation', 
-        'resistance_au_froid', 
-        'resistance_aux_pests', 
-        'niveau_d_entretien', 
-        'type_de_culture']; 
--->
 <!DOCTYPE html>
 <html lang="fr">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <title>GardenGrow - Your Mini Farm Planner</title>
+        <title>Résultats de Recherche de Plantes</title>
 
         <link rel="stylesheet" href="assets/css/style.css">
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
         
         <style>
-            /* Navigation buttons fixed at bottom of viewport */
-            .fixed-bottom-nav {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background-color: white;
-                padding: 15px 0;
-                z-index: 1000;
+            :root {
+                --primary: #2E7D32;
+                --primary-light: #4CAF50;
+                --primary-dark: #1B5E20;    
+                --accent: #FFC107;
+                --neutral-light: #f8f9fa;
+                --neutral-medium: #dee2e6;
+                --neutral-dark: #6c757d;
+                --white: #ffffff;
+                --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                --transition: all 0.3s ease;
             }
             
-            /* Add padding to body to prevent content from being hidden behind fixed nav */
             body {
-                padding-bottom: 70px;
+                font-family: 'Nunito', sans-serif;
+                background-color: #f5f5f4;
+                padding-bottom: 90px;
                 min-height: 100vh;
             }
             
-            /* Step indicator */
-            .step-indicator {
-                background-color: #f8f9fa;
-                padding: 6px 12px;
-                border-radius: 4px;
-                font-weight: bold;
+            /* Page title */
+            .page-title {
+                margin-bottom: 2rem;
+                color: var(--primary-dark);
+                font-weight: 700;
+            }
+            
+            /* Cards */
+            .card {
+                border-radius: 14px;
+                overflow: hidden;
+                box-shadow: var(--card-shadow);
+                transition: var(--transition);
+                border: none;
+            }
+            
+            .card-header {
+                background-color: var(--white);
+                border-bottom: 1px solid var(--neutral-light);
+                padding: 1.25rem 1.5rem;
+            }
+            
+            .card-header h2, .card-header h4 {
+                color: var(--primary-dark);
+                margin-bottom: 0;
+            }
+            
+            /* Form elements */
+            .form-label {
+                font-weight: 600;
+                color: #495057;
+                margin-bottom: 0.5rem;
+            }
+            
+            .form-select, .form-control {
+                border-radius: 10px;
+                padding: 0.75rem 1rem;
+                border: 1px solid var(--neutral-medium);
+                transition: var(--transition);
+            }
+            
+            .form-select:focus, .form-control:focus {
+                border-color: var(--primary);
+                box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
             }
             
             /* Step explanations */
@@ -55,6 +86,40 @@
             
             .step-explanation.active {
                 display: block;
+            }
+            
+            .step-explanation h5 {
+                color: var(--primary-dark);
+                margin-bottom: 1rem;
+                font-weight: 600;
+            }
+            
+            .step-explanation ul {
+                padding-left: 1.25rem;
+            }
+            
+            .step-explanation ul li {
+                margin-bottom: 0.5rem;
+            }
+            
+            .alert {
+                border-radius: 10px;
+                border: none;
+            }
+            
+            .alert-info {
+                background-color: rgba(76, 175, 80, 0.1);
+                color: var(--primary-dark);
+            }
+            
+            .alert-warning {
+                background-color: rgba(255, 193, 7, 0.1);
+                color: #856404;
+            }
+            
+            .alert-success {
+                background-color: rgba(76, 175, 80, 0.1);
+                color: var(--primary-dark);
             }
             
             /* Row with equal height columns */
@@ -82,7 +147,7 @@
             
             .vertical-separator {
                 width: 1px;
-                background-color: #dee2e6;
+                background-color: var(--neutral-medium);
                 position: absolute;
                 top: 0;
                 bottom: 0;
@@ -91,459 +156,583 @@
                 height: 100%;
             }
             
-            /* Accent dots on separator */
-            .separator-dot {
-                width: 10px;
-                height: 10px;
-                background-color: #198754;
-                border-radius: 50%;
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
-                z-index: 1;
+            /* Navigation buttons fixed at bottom of viewport */
+            .fixed-bottom-nav {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background-color: white;
+                padding: 15px 0;
+                z-index: 1000;
+                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
             }
             
-            .dot-top {
-                top: 20px;
+            /* Step indicator */
+            .step-indicator {
+                background-color: var(--neutral-light);
+                padding: 8px 16px;
+                border-radius: 30px;
+                font-weight: bold;
+                color: var(--primary-dark);
             }
             
-            .dot-middle {
-                top: 50%;
-                transform: translate(-50%, -50%);
+            /* Buttons */
+            .btn {
+                border-radius: 30px;
+                padding: 0.5rem 1.5rem;
+                font-weight: 600;
+                transition: var(--transition);
             }
             
-            .dot-bottom {
-                bottom: 20px;
+            .btn-primary {
+                background-color: var(--primary);
+                border-color: var(--primary);
+            }
+            
+            .btn-primary:hover {
+                background-color: var(--primary-dark);
+                border-color: var(--primary-dark);
+                transform: translateY(-2px);
+            }
+            
+            .btn-success {
+                background-color: var(--primary);
+                border-color: var(--primary);
+            }
+            
+            .btn-success:hover {
+                background-color: var(--primary-dark);
+                border-color: var(--primary-dark);
+                transform: translateY(-2px);
+            }
+            
+            .btn-secondary {
+                background-color: var(--neutral-medium);
+                border-color: var(--neutral-medium);
+                color: #495057;
+            }
+            
+            .btn-secondary:hover:not(:disabled) {
+                background-color: var(--neutral-dark);
+                border-color: var(--neutral-dark);
+                color: white;
+                transform: translateY(-2px);
             }
             
             @media (max-width: 767.98px) {
-                .vertical-separator-container,
-                .separator-dot {
+                .vertical-separator-container {
                     display: none;
                 }
-                .ms-5, .me-5 {
-                    margin-left: 0 !important;
-                    margin-right: 0 !important;
+                
+                .card {
+                    margin-bottom: 1.5rem;
+                }
+                
+                .container.py-5 {
+                    padding-top: 1.5rem !important;
+                    padding-bottom: 1.5rem !important;
                 }
             }
         </style>
     </head>
 <body>
+    <!-- Header placeholder -->
+    <div id="header-placeholder"></div>
 
-<div class="container py-5">
-    <div class="row row-equal-height">
-        <!-- Form Section -->
-        <div class="col-md-6">
-            <div class="card border-0 card-full-height me-3">
-                <div class="card-header fw-bold text-black">
-                    <h2>Plant Information Form</h2>
-                </div>
-                <div class="card-body">
-                    <form method="POST" id="planet_form" action="">
-                        <div class="mb-3">
-                            <label for="categorie" class="form-label">Catégorie de plante</label>
-                            <select class="form-select" id="categorie" name="categorie" >
-                                <option value="" selected disabled>Choisir une catégorie</option>
-                                <option value="Légumes">Fruit</option>
-                                <option value="Fruits">Céréale</option>
-                                <option value="Herbes aromatiques">Légumineuse</option>
-                            </select>
-                        </div>
+    <div class="container py-5">
+        <h1 class="page-title text-center mb-4">Trouver la plante idéale</h1>
+        <p class="text-center mb-5">Tell us about your gardening preferences and we'll recommend the best plants for you</p>
+        
+        <div class="row row-equal-height">
+            <!-- Form Section -->
+            <div class="col-md-6">
+                <div class="card card-full-height">
+                    <div class="card-header">
+                        <h2>Plant Information Form</h2>
+                    </div>
+                    <div class="card-body ">
+                        <form method="POST" id="planet_form">
+                            <div class="mb-4">
+                                <label for="categorie" class="form-label">Catégorie de plante</label>
+                                <select class="form-select" id="categorie" name="categorie" >
+                                    <option value="" selected disabled>Choisir une catégorie</option>
+                                    <option value="Légume">Légume</option>
+                                    <option value="Fruit">Fruit</option>
+                                    <option value="Céréale">Céréale</option>
+                                    <option value="Légumineuse">Légumineuse</option>
+                                </select>
+                            </div>
 
-                        <!-- Hidden fields that will be shown one at a time with JavaScript -->
-                        <div id="step-2" class="form-step" style="display: none;">
-                            <div class="mb-3">
-                                <label for="superficie" class="form-label">Superficie</label>
-                                <input type="number" class="form-control" id="superficie" name="superficie" placeholder="en m²" >
+                            <!-- Hidden fields that will be shown one at a time with JavaScript -->
+                            <div id="step-2" class="form-step" style="display: none;">
+                                <div class="mb-4">
+                                    <label for="superficie" class="form-label">Superficie</label>
+                                    <input type="number" class="form-control" id="superficie" name="superficie" placeholder="en m²" >
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div id="step-3" class="form-step" style="display: none;">
-                            <div class="mb-3">
-                                <label for="saison_adequate" class="form-label">Saison adéquate</label>
-                                <select class="form-select" id="saison_adequate" name="saison_adequate" >
-                                    <option value="" selected disabled>Choisir une saison</option>
-                                    <option value="Spring">Printemps</option>
-                                    <option value="Summer">Automne</option>
-                                    <option value="Fall">Été</option>
-                                    <option value="Winter">Hiver</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div id="step-4" class="form-step" style="display: none;">
-                            <div class="mb-3">
-                                <label for="luminosite" class="form-label">Luminosité</label>
-                                <select class="form-select" id="luminosite" name="luminosite" >
-                                    <option value="" selected disabled>Choisir un niveau de luminosité</option>
-                                    <option value="Full Sun">Plein soleil</option>
-                                    <option value="Partial Sun">Mi-ombre</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div id="step-5" class="form-step" style="display: none;">
-                            <div class="mb-3">
-                                <label for="type_de_sol" class="form-label">Type de sol</label>
-                                <select class="form-select" id="type_de_sol" name="type_de_sol" >
-                                    <option value="" selected disabled>Choisir un type de sol</option>
-                                    <option value="Sandy">sableux</option>
-                                    <option value="Clay">Riche en humus</option>
-                                    <option value="Loamy">Léger</option>
-                                    <option value="Peaty">Sec</option>
-                                    <option value="Peaty">Tous types</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div id="step-6" class="form-step" style="display: none;">
-                            <div class="mb-3">
-                                <label for="systeme_d_irrigation" class="form-label">Système d'irrigation</label>
-                                <select class="form-select" id="systeme_d_irrigation" name="systeme_d_irrigation" >
-                                    <option value="" selected disabled>Choisir un système d'irrigation</option>
-                                    <option value="Drip">Goutte à goutte</option>
-                                    <option value="Sprinkler">Arrosage manuel</option>
-                                    <option value="Manual">Arrosage profond</option>
-                                    <option value="Self-Watering">Aspersion</option>
-                                    <option value="Self-Watering">Pluie naturelle</option>
-                                </select>
-                            </div>
-                        </div>
                             
-                        <div id="step-7" class="form-step" style="display: none;">
-                            <div class="mb-3">
-                                <label for="resistance_au_froid" class="form-label">Résistance au froid</label>
-                                <select class="form-select" id="resistance_au_froid" name="resistance_au_froid" >
-                                    <option value="" selected disabled>Choisir un niveau de résistance</option>
-                                    <option value="Hardy">Résistant</option>
-                                    <option value="Semi-Hardy">Sensible</option>
-                                </select>
+                            <div id="step-3" class="form-step" style="display: none;">
+                                <div class="mb-4">
+                                    <label for="saison_adequate" class="form-label">Saison adéquate</label>
+                                    <select class="form-select" id="saison_adequate" name="saison_adequate" >
+                                        <option value="" selected disabled>Choisir une saison</option>
+                                        <option value="Printemps">Printemps</option>
+                                        <option value="Automne">Automne</option>
+                                        <option value="Été">Été</option>
+                                        <option value="Hiver">Hiver</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-   
-                        <div id="step-8" class="form-step" style="display: none;">
-                            <div class="mb-3">
-                                <label for="resistance_aux_pests" class="form-label">Résistance aux pests</label>
-                                <select class="form-select" id="resistance_aux_pests" name="resistance_aux_pests" >
-                                    <option value="" selected disabled>Choisir un niveau de résistance</option>
-                                    <option value="High">Sensible</option>
-                                    <option value="Medium">Résistant</option>
-                                </select>
+                            
+                            <div id="step-4" class="form-step" style="display: none;">
+                                <div class="mb-4">
+                                    <label for="luminosite" class="form-label">Luminosité</label>
+                                    <select class="form-select" id="luminosite" name="luminosite" >
+                                        <option value="" selected disabled>Choisir un niveau de luminosité</option>
+                                        <option value="Plein soleil">Plein soleil</option>
+                                        <option value="Mi-ombre">Mi-ombre</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        
-                         
+                            
+                            <div id="step-5" class="form-step" style="display: none;">
+                                <div class="mb-4">
+                                    <label for="type_de_sol" class="form-label">Type de sol</label>
+                                    <select class="form-select" id="type_de_sol" name="type_de_sol" >
+                                        <option value="" selected disabled>Choisir un type de sol</option>
+                                        <option value="Sableux">Sableux</option>
+                                        <option value="Riche en humus">Riche en humus</option>
+                                        <option value="Léger">Léger</option>
+                                        <option value="Sec">Sec</option>
+                                        <option value="Tous types">Tous types</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div id="step-6" class="form-step" style="display: none;">
+                                <div class="mb-4">
+                                    <label for="systeme_d_irrigation" class="form-label">Système d'irrigation</label>
+                                    <select class="form-select" id="systeme_d_irrigation" name="systeme_d_irrigation" >
+                                        <option value="" selected disabled>Choisir un système d'irrigation</option>
+                                        <option value="Goutte à goutte">Goutte à goutte</option>
+                                        <option value="Arrosage manuel">Arrosage manuel</option>
+                                        <option value="Arrosage profond">Arrosage profond</option>
+                                        <option value="Aspersion">Aspersion</option>
+                                        <option value="Pluie naturelle">Pluie naturelle</option>
+                                    </select>
+                                </div>
+                            </div>
+                                
+                            <div id="step-7" class="form-step" style="display: none;">
+                                <div class="mb-4">
+                                    <label for="resistance_au_froid" class="form-label">Résistance au froid</label>
+                                    <select class="form-select" id="resistance_au_froid" name="resistance_au_froid" >
+                                        <option value="" selected disabled>Choisir un niveau de résistance</option>
+                                        <option value="Résistant">Résistant</option>
+                                        <option value="Sensible">Sensible</option>
+                                    </select>
+                                </div>
+                            </div>
+       
+                            <div id="step-8" class="form-step" style="display: none;">
+                                <div class="mb-4">
+                                    <label for="resistance_aux_pests" class="form-label">Résistance aux pests</label>
+                                    <select class="form-select" id="resistance_aux_pests" name="resistance_aux_pests" >
+                                        <option value="" selected disabled>Choisir un niveau de résistance</option>
+                                        <option value="Sensible">Sensible</option>
+                                        <option value="Résistant">Résistant</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div id="step-9" class="form-step" style="display: none;">
+                                <div class="mb-4">
+                                    <label for="niveau_d_entretien" class="form-label">Niveau d'entretien</label>
+                                    <select class="form-select" id="niveau_d_entretien" name="niveau_d_entretien" >
+                                        <option value="" selected disabled>Choisir un niveau d'entretien</option>
+                                        <option value="Facile">Facile</option>
+                                        <option value="Modéré">Modéré</option>
+                                        <option value="Difficile">Difficile</option>
+                                        <option value="Très facile">Très facile</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div id="step-10" class="form-step" style="display: none;">
+                                <div class="mb-4">
+                                    <label for="type_de_culture" class="form-label">Type de culture</label>
+                                    <select class="form-select" id="type_de_culture" name="type_de_culture" >
+                                        <option value="" selected disabled>Choisir un type de culture</option>
+                                        <option value="Plein terre">Plein terre</option>
+                                        <option value="Pot ou pleine terre">Pot ou pleine terre</option>
+                                        <option value="Pot">Pot</option>
+                                        <option value="Plein champ">Plein champ</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" id="hiddenSubmitBtn" style="display: none;"></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-                        <div id="step-9" class="form-step" style="display: none;">
-                            <div class="mb-3">
-                                <label for="niveau_d_entretien" class="form-label">Niveau d'entretien</label>
-                                <select class="form-select" id="niveau_d_entretien" name="niveau_d_entretien" >
-                                    <option value="" selected disabled>Choisir un niveau d'entretien</option>
-                                    <option value="Low">Facile</option>
-                                    <option value="Medium">Modéré</option>
-                                    <option value="High">Difficile</option>
-                                    <option value="High">Très facile</option>
-                                </select>
+
+            <div class="col-md-1 d-none d-md-block">
+                <div class="vertical-separator-container">
+                    <div class="vertical-separator"></div>
+                </div>
+            </div>
+            
+                    <!-- Description Section -->
+                <div class="col-md-5">
+                    <div class="card border-0 card-full-height ms-2">
+                        <div class="card-header text-black">
+                            <h4 id="explanation-title">Plant Category</h4>
+                        </div>
+                        <div class="card-body" id="plant-description">
+                            <!-- Step 1 explanation -->
+                            <div id="explanation-1" class="step-explanation active">
+                                <h5>Select a Plant Category</h5>
+                                <p>Choose the category that best describes your plant:</p>
+                                <ul>
+                                    <li><strong>Fruit:</strong> Plants that produce edible fruits</li>
+                                    <li><strong>Céréale:</strong> Grain-producing plants like wheat, rice, or corn</li>
+                                    <li><strong>Légumineuse:</strong> Plants that produce seeds in pods, like beans or peas</li>
+                                </ul>
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle"></i> The category helps determine growing conditions and companion planting options.
+                                </div>
+                            </div>
+                            
+                            <!-- Step 2 explanation -->
+                            <div id="explanation-2" class="step-explanation">
+                                <h5>Growing Area Size</h5>
+                                <p>Specify the area size in square meters available for planting.</p>
+                                <p>This helps determine:</p>
+                                <ul>
+                                    <li>How many plants can fit in your space</li>
+                                    <li>Appropriate spacing between plants</li>
+                                    <li>Optimal layout for your garden</li>
+                                </ul>
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-ruler-combined"></i> Remember to account for walking paths and access areas in your garden.
+                                </div>
+                            </div>
+                            
+                            <!-- Step 3 explanation -->
+                            <div id="explanation-3" class="step-explanation">
+                                <h5>Optimal Growing Season</h5>
+                                <p>Indicate when your plant grows best during the year.</p>
+                                <ul>
+                                    <li><strong>Spring:</strong> March to May</li>
+                                    <li><strong>Summer:</strong> June to August</li>
+                                    <li><strong>Fall:</strong> September to November</li>
+                                    <li><strong>Winter:</strong> December to February</li>
+                                </ul>
+                                <div class="alert alert-info">
+                                    <i class="fas fa-calendar-alt"></i> The right timing maximizes yield and plant health.
+                                </div>
+                            </div>
+                            
+                            <!-- Step 4 explanation -->
+                            <div id="explanation-4" class="step-explanation">
+                                <h5>Light Requirements</h5>
+                                <p>Specify how much sunlight your plant needs:</p>
+                                <ul>
+                                    <li><strong>Full Sun:</strong> 6+ hours of direct sunlight</li>
+                                    <li><strong>Partial Sun:</strong> 4-6 hours of direct sunlight</li>
+                                    <li><strong>Partial Shade:</strong> 2-4 hours of direct sunlight</li>
+                                    <li><strong>Full Shade:</strong> Less than 2 hours of direct sunlight</li>
+                                </ul>
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-sun"></i> Consider seasonal changes in sun exposure in your garden.
+                                </div>
+                            </div>
+                            
+                            <!-- Step 5 explanation -->
+                            <div id="explanation-5" class="step-explanation">
+                                <h5>Soil Requirements</h5>
+                                <p>Different plants thrive in different soil types:</p>
+                                <ul>
+                                    <li><strong>Sandy:</strong> Well-draining, warms quickly</li>
+                                    <li><strong>Clay:</strong> Holds nutrients well, retains water</li>
+                                    <li><strong>Loamy:</strong> Ideal balanced soil, good drainage</li>
+                                    <li><strong>Peaty:</strong> Acidic, high organic content</li>
+                                </ul>
+                                <div class="alert alert-info">
+                                    <i class="fas fa-layer-group"></i> Soil can be amended to better suit your plants' needs.
+                                </div>
+                            </div>
+                            
+                            <!-- Step 6 explanation -->
+                            <div id="explanation-6" class="step-explanation">
+                                <h5>Irrigation System</h5>
+                                <p>Choose how you'll water your plants:</p>
+                                <ul>
+                                    <li><strong>Drip:</strong> Water-efficient, delivers directly to roots</li>
+                                    <li><strong>Sprinkler:</strong> Covers large areas, simulates rainfall</li>
+                                    <li><strong>Manual:</strong> Hand watering with hose or watering can</li>
+                                    <li><strong>Self-Watering:</strong> Uses reservoirs for consistent moisture</li>
+                                </ul>
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-tint"></i> Different plants have different watering needs.
+                                </div>
+                            </div>
+                            
+                            <!-- Step 7 explanation -->
+                            <div id="explanation-7" class="step-explanation">
+                                <h5>Cold Resistance</h5>
+                                <p>Indicate how well your plant handles cold temperatures:</p>
+                                <ul>
+                                    <li><strong>Hardy:</strong> Survives freezing temperatures</li>
+                                    <li><strong>Semi-Hardy:</strong> Tolerates light frost</li>
+                                    <li><strong>Tender:</strong> Damaged by any frost</li>
+                                    <li><strong>Very Tender:</strong> Damaged below 10°C (50°F)</li>
+                                </ul>
+                                <div class="alert alert-info">
+                                    <i class="fas fa-snowflake"></i> Cold resistance affects planting timing and winter protection needs.
+                                </div>
+                            </div>
+                            
+                            <!-- Step 8 explanation -->
+                            <div id="explanation-8" class="step-explanation">
+                                <h5>Pest Resistance</h5>
+                                <p>Rate how resistant your plant is to common pests:</p>
+                                <ul>
+                                    <li><strong>High:</strong> Rarely affected by pests</li>
+                                    <li><strong>Medium:</strong> Occasionally affected, usually recovers</li>
+                                    <li><strong>Low:</strong> Frequently affected, requires intervention</li>
+                                </ul>
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-bug"></i> Companion planting can help deter pests naturally.
+                                </div>
+                            </div>
+                            
+                            <!-- Step 9 explanation -->
+                            <div id="explanation-9" class="step-explanation">
+                                <h5>Maintenance Level</h5>
+                                <p>Specify how much care your plant requires:</p>
+                                <ul>
+                                    <li><strong>Low:</strong> Minimal attention needed</li>
+                                    <li><strong>Medium:</strong> Regular maintenance </li>
+                                    <li><strong>High:</strong> Frequent attention and care needed</li>
+                                </ul>
+                                <div class="alert alert-info">
+                                    <i class="fas fa-hands"></i> Consider your available time when selecting maintenance level.
+                                </div>
+                            </div>
+                            
+                            <!-- Step 10 explanation -->
+                            <div id="explanation-10" class="step-explanation">
+                                <h5>Cultivation Method</h5>
+                                <p>Choose how you plan to grow your plants:</p>
+                                <ul>
+                                    <li><strong>Traditional:</strong> Direct in-ground planting</li>
+                                    <li><strong>Raised Bed:</strong> Elevated soil containers</li>
+                                    <li><strong>Container:</strong> Pots, planters or other vessels</li>
+                                    <li><strong>Hydroponic:</strong> Growing in nutrient solution without soil</li>
+                                </ul>
+                                <div class="alert alert-success">
+                                    <i class="fas fa-check-circle"></i> You're almost done! Submit your form to get personalized recommendations.
+                                </div>
                             </div>
                         </div>
-                        
-                        <div id="step-10" class="form-step" style="display: none;">
-                            <div class="mb-3">
-                                <label for="type_de_culture" class="form-label">Type de culture</label>
-                                <select class="form-select" id="type_de_culture" name="type_de_culture" >
-                                    <option value="" selected disabled>Choisir un type de culture</option>
-                                    <option value="Traditional">Plein terre</option>
-                                    <option value="Raised Bed">Pot ou pleine terre</option>
-                                    <option value="Container">Pot</option>
-                                    <option value="Hydroponic">Plein champ</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button type="submit" id="actualSubmit" style="display: none;"></button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-
-
-        <div class="col-md-1 d-none d-md-block">
-        <div class="vertical-separator-container">
-        <div class="vertical-separator"></div>
-        <!-- Removed separator dots -->
         </div>
-        </div>
-        
-        <!-- Description Section -->
-        <div class="col-md-5">
-            <div class="card border-0 card-full-height ms-2">
-                <div class="card-header text-black">
-                    <h4 id="explanation-title">Plant Category</h4>
+    </div>
+
+    <!-- Fixed Navigation Buttons at bottom of viewport -->
+    <div class="fixed-bottom-nav">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-secondary" id="prevBtn" onclick="prevStep()" disabled>
+                    <i class="fas fa-chevron-left me-2"></i>Previous
+                </button>
+                <div class="step-indicator">
+                    <span id="current-step">1</span>/<span id="total-steps">10</span>
                 </div>
-                <div class="card-body" id="plant-description">
-                    <!-- Step 1 explanation -->
-                    <div id="explanation-1" class="step-explanation active">
-                        <h5>Select a Plant Category</h5>
-                        <p>Choose the category that best describes your plant:</p>
-                        <ul>
-                            <li><strong>Fruit:</strong> Plants that produce edible fruits</li>
-                            <li><strong>Céréale:</strong> Grain-producing plants like wheat, rice, or corn</li>
-                            <li><strong>Légumineuse:</strong> Plants that produce seeds in pods, like beans or peas</li>
-                        </ul>
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i> The category helps determine growing conditions and companion planting options.
-                        </div>
-                    </div>
-                    
-                    <!-- Step 2 explanation -->
-                    <div id="explanation-2" class="step-explanation">
-                        <h5>Growing Area Size</h5>
-                        <p>Specify the area size in square meters available for planting.</p>
-                        <p>This helps determine:</p>
-                        <ul>
-                            <li>How many plants can fit in your space</li>
-                            <li>Appropriate spacing between plants</li>
-                            <li>Optimal layout for your garden</li>
-                        </ul>
-                        <div class="alert alert-warning">
-                            <i class="fas fa-ruler-combined"></i> Remember to account for walking paths and access areas in your garden.
-                        </div>
-                    </div>
-                    
-                    <!-- Step 3 explanation -->
-                    <div id="explanation-3" class="step-explanation">
-                        <h5>Optimal Growing Season</h5>
-                        <p>Indicate when your plant grows best during the year.</p>
-                        <ul>
-                            <li><strong>Spring:</strong> March to May</li>
-                            <li><strong>Summer:</strong> June to August</li>
-                            <li><strong>Fall:</strong> September to November</li>
-                            <li><strong>Winter:</strong> December to February</li>
-                        </ul>
-                        <div class="alert alert-info">
-                            <i class="fas fa-calendar-alt"></i> The right timing maximizes yield and plant health.
-                        </div>
-                    </div>
-                    
-                    <!-- Step 4 explanation -->
-                    <div id="explanation-4" class="step-explanation">
-                        <h5>Light Requirements</h5>
-                        <p>Specify how much sunlight your plant needs:</p>
-                        <ul>
-                            <li><strong>Full Sun:</strong> 6+ hours of direct sunlight</li>
-                            <li><strong>Partial Sun:</strong> 4-6 hours of direct sunlight</li>
-                            <li><strong>Partial Shade:</strong> 2-4 hours of direct sunlight</li>
-                            <li><strong>Full Shade:</strong> Less than 2 hours of direct sunlight</li>
-                        </ul>
-                        <div class="alert alert-warning">
-                            <i class="fas fa-sun"></i> Consider seasonal changes in sun exposure in your garden.
-                        </div>
-                    </div>
-                    
-                    <!-- Step 5 explanation -->
-                    <div id="explanation-5" class="step-explanation">
-                        <h5>Soil Requirements</h5>
-                        <p>Different plants thrive in different soil types:</p>
-                        <ul>
-                            <li><strong>Sandy:</strong> Well-draining, warms quickly</li>
-                            <li><strong>Clay:</strong> Holds nutrients well, retains water</li>
-                            <li><strong>Loamy:</strong> Ideal balanced soil, good drainage</li>
-                            <li><strong>Peaty:</strong> Acidic, high organic content</li>
-                        </ul>
-                        <div class="alert alert-info">
-                            <i class="fas fa-layer-group"></i> Soil can be amended to better suit your plants' needs.
-                        </div>
-                    </div>
-                    
-                    <!-- Step 6 explanation -->
-                    <div id="explanation-6" class="step-explanation">
-                        <h5>Irrigation System</h5>
-                        <p>Choose how you'll water your plants:</p>
-                        <ul>
-                            <li><strong>Drip:</strong> Water-efficient, delivers directly to roots</li>
-                            <li><strong>Sprinkler:</strong> Covers large areas, simulates rainfall</li>
-                            <li><strong>Manual:</strong> Hand watering with hose or watering can</li>
-                            <li><strong>Self-Watering:</strong> Uses reservoirs for consistent moisture</li>
-                        </ul>
-                        <div class="alert alert-warning">
-                            <i class="fas fa-tint"></i> Different plants have different watering needs.
-                        </div>
-                    </div>
-                    
-                    <!-- Step 7 explanation -->
-                    <div id="explanation-7" class="step-explanation">
-                        <h5>Cold Resistance</h5>
-                        <p>Indicate how well your plant handles cold temperatures:</p>
-                        <ul>
-                            <li><strong>Hardy:</strong> Survives freezing temperatures</li>
-                            <li><strong>Semi-Hardy:</strong> Tolerates light frost</li>
-                            <li><strong>Tender:</strong> Damaged by any frost</li>
-                            <li><strong>Very Tender:</strong> Damaged below 10°C (50°F)</li>
-                        </ul>
-                        <div class="alert alert-info">
-                            <i class="fas fa-snowflake"></i> Cold resistance affects planting timing and winter protection needs.
-                        </div>
-                    </div>
-                    
-                    <!-- Step 8 explanation -->
-                    <div id="explanation-8" class="step-explanation">
-                        <h5>Pest Resistance</h5>
-                        <p>Rate how resistant your plant is to common pests:</p>
-                        <ul>
-                            <li><strong>High:</strong> Rarely affected by pests</li>
-                            <li><strong>Medium:</strong> Occasionally affected, usually recovers</li>
-                            <li><strong>Low:</strong> Frequently affected, requires intervention</li>
-                        </ul>
-                        <div class="alert alert-warning">
-                            <i class="fas fa-bug"></i> Companion planting can help deter pests naturally.
-                        </div>
-                    </div>
-                    
-                    <!-- Step 9 explanation -->
-                    <div id="explanation-9" class="step-explanation">
-                        <h5>Maintenance Level</h5>
-                        <p>Specify how much care your plant requires:</p>
-                        <ul>
-                            <li><strong>Low:</strong> Minimal attention needed</li>
-                            <li><strong>Medium:</strong> Regular maintenance </li>
-                            <li><strong>High:</strong> Frequent attention and care needed</li>
-                        </ul>
-                        <div class="alert alert-info">
-                            <i class="fas fa-hands"></i> Consider your available time when selecting maintenance level.
-                        </div>
-                    </div>
-                    
-                    <!-- Step 10 explanation -->
-                    <div id="explanation-10" class="step-explanation">
-                        <h5>Cultivation Method</h5>
-                        <p>Choose how you plan to grow your plants:</p>
-                        <ul>
-                            <li><strong>Traditional:</strong> Direct in-ground planting</li>
-                            <li><strong>Raised Bed:</strong> Elevated soil containers</li>
-                            <li><strong>Container:</strong> Pots, planters or other vessels</li>
-                            <li><strong>Hydroponic:</strong> Growing in nutrient solution without soil</li>
-                        </ul>
-                        <div class="alert alert-success">
-                            <i class="fas fa-check-circle"></i> You're almost done! Submit your form to get personalized recommendations.
-                        </div>
-                    </div>
-                </div>
+                <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextStep()">
+                    Next<i class="fas fa-chevron-right ms-2"></i>
+                </button>
+                <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;" form="planet_form">
+                    <i class="fas fa-check-circle me-2"></i>Submit
+                </button>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Fixed Navigation Buttons at bottom of viewport -->
-<div class="fixed-bottom-nav">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center">
-            <button type="button" class="btn btn-secondary" id="prevBtn" onclick="prevStep()" disabled>Previous</button>
-            <div class="step-indicator">
-                <span id="current-step">1</span>/<span id="total-steps">10</span>
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-3 mt-5 d-none">
+        <div class="container">
+            <div class="text-center">
+                <h5 class="mb-2">GardenGrow</h5>
+                <p class="small mb-0">
+                    <span class="text-white">© 2025 GardenGrow. All rights reserved.</span>
+                </p>
             </div>
-            <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextStep()">Next</button>
-            <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;" form="planet_form">Submit</button>
         </div>
-    </div>
-</div>
+    </footer>
+
+    <script src="assets/js/include.js"></script>
+    <script>
+        // Form navigation variables
+        let currentStep = 1;
+        const totalSteps = 10;
+        
+        // Step titles
+        const stepTitles = {
+            1: "Plant Category",
+            2: "Growing Area",
+            3: "Growing Season",
+            4: "Light Requirements",
+            5: "Soil Type",
+            6: "Irrigation System",
+            7: "Cold Resistance",
+            8: "Pest Resistance",
+            9: "Maintenance Level",
+            10: "Cultivation Method"
+        };
+        
+        // Initialize step counter
+        document.getElementById('total-steps').textContent = totalSteps;
+            
+            function showStep(step) {
+                // Hide all steps
+                document.querySelectorAll('.form-step').forEach(el => {
+                    el.style.display = 'none';
+                });
+                
+                // Show current step (first step is already visible by default)
+                if (step > 1) {
+                    document.getElementById(`step-${step}`).style.display = 'block';
+                }
+                
+                // Update step counter
+                document.getElementById('current-step').textContent = step;
+                
+                // Update explanation section
+                updateExplanation(step);
+                
+                // Enable/disable previous button
+                document.getElementById('prevBtn').disabled = (step === 1);
+                
+                // Show/hide next and submit buttons
+                if (step === totalSteps) {
+                    document.getElementById('nextBtn').style.display = 'none';
+                    document.getElementById('submitBtn').style.display = 'block';
+                } else {
+                    document.getElementById('nextBtn').style.display = 'block';
+                    document.getElementById('submitBtn').style.display = 'none';
+                }
+            }
+            
+            function updateExplanation(step) {
+                // Hide all explanations
+                document.querySelectorAll('.step-explanation').forEach(el => {
+                    el.classList.remove('active');
+                });
+                
+                // Show current explanation
+                document.getElementById(`explanation-${step}`).classList.add('active');
+                
+                // Update title
+                document.getElementById('explanation-title').textContent = stepTitles[step];
+            }
+
+            function nextStep() {
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    showStep(currentStep);
+                }
+            }
+
+            function prevStep() {
+                if (currentStep > 1) {
+                    currentStep--;
+                    showStep(currentStep);
+                }
+            }
 
 
-<!-- <script>
-    // Add this to your existing script section
-    document.getElementById('planet_form').addEventListener('submit', function(event) {
-        // For testing only - remove this line when your backend is ready
-        event.preventDefault();
+     document.getElementById('planet_form').addEventListener('submit', function(e) {
+        e.preventDefault();
         
-        console.log('Form submitted!');
-        alert('Form submitted successfully!');
+        // Valider que tous les champs sont remplis
+        const requiredFields = document.querySelectorAll('[required]');
+        let isValid = true;
         
-        // Log all form data
+        requiredFields.forEach(field => {
+            if (!field.value) {
+                field.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                field.classList.remove('is-invalid');
+            }
+        });
+        
+        if (!isValid) {
+            alert('Veuillez remplir tous les champs obligatoires');
+            return;
+        }
+        
         const formData = new FormData(this);
-        for (const pair of formData.entries()) {
-            console.log(pair[0] + ': ' + pair[1]);
-        }
+        const formObject = Object.fromEntries(formData.entries());;
+        formData.forEach((value, key) => {
+            formObject[key] = value;
+        });
+        sessionStorage.setItem('plantFilters', JSON.stringify(formObject));
+        // Afficher l'indicateur de chargement
+        document.getElementById('submitBtn').disabled = true;
+        document.getElementById('submitBtn').innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Envoi en cours...';
+        console.log("Formulaire envoyé :", formObject);
+        // Envoyer les données à l'API
+        fetch('../backend/api/resultats.php?page=1', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formObject)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Erreur réseau');
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === 'success') {
+                // Stocker les résultats et rediriger
+                sessionStorage.setItem('plantResults', JSON.stringify(data));
+                sessionStorage.setItem('plantFilters', JSON.stringify(formData));
+                window.location.href = 'resultats.html';
+            } else {
+                throw new Error(data.message || 'Erreur inconnue');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Erreur: ' + error.message);
+        })
+        .finally(() => {
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-check-circle me-2"></i>Submit';
+        });
     });
-</script> -->
+   
+   </script>
 
-
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Form navigation variables
-    let currentStep = 1;
-    const totalSteps = 10;
-    
-    // Step titles
-    const stepTitles = {
-        1: "Plant Category",
-        2: "Growing Area",
-        3: "Growing Season",
-        4: "Light Requirements",
-        5: "Soil Type",
-        6: "Irrigation System",
-        7: "Cold Resistance",
-        8: "Pest Resistance",
-        9: "Maintenance Level",
-        10: "Cultivation Method"
-    };
-    
-    // Initialize step counter
-    document.getElementById('total-steps').textContent = totalSteps;
-    
-    function showStep(step) {
-        // Hide all steps
-        document.querySelectorAll('.form-step').forEach(el => {
-            el.style.display = 'none';
+    // Animation au scroll
+    document.addEventListener('DOMContentLoaded', () => {
+        const features = document.querySelectorAll('.feature-card');
+        
+        features.forEach((feature, index) => {
+            feature.style.transitionDelay = `${index * 100}ms`;
         });
-        
-        // Show current step (first step is already visible by default)
-        if (step > 1) {
-            document.getElementById(`step-${step}`).style.display = 'block';
-        }
-        
-        // Update step counter
-        document.getElementById('current-step').textContent = step;
-        
-        // Update explanation section
-        updateExplanation(step);
-        
-        // Enable/disable previous button
-        document.getElementById('prevBtn').disabled = (step === 1);
-        
-        // Show/hide next and submit buttons
-        if (step === totalSteps) {
-            document.getElementById('nextBtn').style.display = 'none';
-            document.getElementById('submitBtn').style.display = 'block';
-        } else {
-            document.getElementById('nextBtn').style.display = 'block';
-            document.getElementById('submitBtn').style.display = 'none';
-        }
-    }
-    
-    function updateExplanation(step) {
-        // Hide all explanations
-        document.querySelectorAll('.step-explanation').forEach(el => {
-            el.classList.remove('active');
-        });
-        
-        // Show current explanation
-        document.getElementById(`explanation-${step}`).classList.add('active');
-        
-        // Update title
-        document.getElementById('explanation-title').textContent = stepTitles[step];
-    }
-
-    function nextStep() {
-        if (currentStep < totalSteps) {
-            currentStep++;
-            showStep(currentStep);
-        }
-    }
-
-    function prevStep() {
-        if (currentStep > 1) {
-            currentStep--;
-            showStep(currentStep);
-        }
-    }
+    });
 </script>
 </body>
 </html>

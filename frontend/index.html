@@ -1,127 +1,341 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>GardenGrow - Your Mini Farm Planner</title>
-
-    <link rel="stylesheet" href="assets/css/style.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GardenGrow - Votre Assistant Jardin Intelligent</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-  </head>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #60ad5e;
+            --secondary: #ff9800;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/image/ho.jpg') center/cover no-repeat;
+            color: white;
+            padding: 8rem 0;
+            position: relative;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            height: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            backdrop-filter: blur(5px);
+            background: rgba(255,255,255,0.9);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            background: rgba(46, 125, 50, 0.1);
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+            transform: scale(1.05);
+        }
+        
+        .how-it-works {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        
+        .step-number {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .cta-section {
+            background: var(--primary);
+            color: white;
+            padding: 5rem 0;
+            position: relative;
+        }
+        
+        .cta-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+        }
+        
+        .plant-card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .plant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .blur-hover {
+            transition: filter 0.3s;
+        }
+        
+        .blur-hover:hover {
+            filter: blur(2px);
+        }
+    </style>
+</head>
 <body>
-  <!-- header blase holder -->
-  <div id = "header-placeholder"></div> 
-
-  <section class="hero-section text-center">
-    <div class="container">
-      <h1 class="display-4 fw-bold mb-4">Transform Your Garden into a Mini Farm</h1>
-      <p class="lead mb-5">Plan, grow, and harvest your own food with our easy-to-use garden planning tools</p>
-      <a class="btn btn-success btn-lg px-5 py-3" href="planet_from.html">Start Planning Your Garden</a>
-    </div>
-  </section>
-
-
-
-  <section class="container mb-5">
-    <div class="row text-center">
-      <div class="col-md-4 mb-4">
-        <div class="p-4">
-          <i class="fas fa-map-marked-alt feature-icon"></i>
-          <h3>Interactive Garden Planner</h3>
-          <p>Design your garden layout with our drag-and-drop tool. Visualize your space and optimize plant placement.</p>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">GardenGrow</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="planets.html">Plantes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="planet_from.html">Mon Jardin</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="p-4">
-          <i class="fas fa-calendar-alt feature-icon"></i>
-          <h3>Seasonal Planting Guide</h3>
-          <p>Know exactly when to plant, water, and harvest with personalized schedules based on your location.</p>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1 class="display-3 fw-bold mb-4">Votre Jardin Sur Mesure</h1>
+                    <p class="lead mb-5">Dites-nous ce que vous avez, nous vous disons quoi planter !</p>
+                    <a href="planet_from.html" class="btn btn-primary btn-lg px-5 py-3 shadow">
+                        <i class="fas fa-seedling me-2"></i> Créer mon plan
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="p-4">
-          <i class="fas fa-leaf feature-icon"></i>
-          <h3>Plant Database</h3>
-          <p>Access information on hundreds of plants, including growing requirements and companion planting advice.</p>
+    </section>
+
+    <!-- Features -->
+    <section class="container my-5 py-5">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Analyse Intelligente</h3>
+                    <p>Nous évaluons votre espace, sol, climat et préférences pour des recommandations personnalisées.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Sélection Optimisée</h3>
+                    <p>Notre algorithme sélectionne les plantes parfaitement adaptées à votre situation unique.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3>Planification Saisonnière</h3>
+                    <p>Recevez un calendrier de plantation et d'entretien adapté à votre région.</p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="container mb-5">
-    <div class="row align-items-center">
-      <div class="col-md-6">
-        <h2>How It Works</h2>
-        <div class="d-flex mb-3">
-          <div class="me-3">
-            <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">1</div>
-          </div>
-          <div>
-            <h5>Measure Your Space</h5>
-            <p>Enter your garden dimensions to create an accurate layout.</p>
-          </div>
+    <!-- How It Works -->
+    <section class="container my-5 py-5 how-it-works">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6 p-5">
+                <h2 class="fw-bold mb-4">Comment ça marche ?</h2>
+                
+                <div class="d-flex mb-4">
+                    <div class="me-4">
+                        <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center step-number" style="width: 40px; height: 40px;">1</div>
+                    </div>
+                    <div>
+                        <h4>Répondez à notre questionnaire</h4>
+                        <p>Décrivez votre espace jardin (superficie, type de sol, ensoleillement...) et vos préférences.</p>
+                    </div>
+                </div>
+                
+                <div class="d-flex mb-4">
+                    <div class="me-4">
+                        <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center step-number" style="width: 40px; height: 40px;">2</div>
+                    </div>
+                    <div>
+                        <h4>Recevez vos recommandations</h4>
+                        <p>Notre système analyse des milliers de données pour vous proposer les plantes idéales.</p>
+                    </div>
+                </div>
+                
+                <div class="d-flex">
+                    <div class="me-4">
+                        <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center step-number" style="width: 40px; height: 40px;">3</div>
+                    </div>
+                    <div>
+                        <h4>Planifiez et cultivez</h4>
+                        <p>Suivez notre guide personnalisé pour des récoltes abondantes toute l'année.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 p-0">
+                <div class="ratio ratio-16x9 h-100 blur-hover">
+                    <img src="assets/image/ho.jpg" alt="Processus GardenGrow" class="object-fit-cover w-100 h-100">
+                </div>
+            </div>
         </div>
-        <div class="d-flex mb-3">
-          <div class="me-3">
-            <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">2</div>
-          </div>
-          <div>
-            <h5>Select Your Plants</h5>
-            <p>Browse our database and choose plants that match your climate and preferences.</p>
-          </div>
+    </section>
+
+    <!-- Plant Showcase -->
+    <section class="container my-5 py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Découvrez nos plantes recommandées</h2>
+            <p class="lead">Des centaines d'options adaptables à votre jardin</p>
+            <a href="planets.html" class="btn btn-outline-success px-4">Voir toutes les plantes</a>
         </div>
-        <div class="d-flex mb-3">
-          <div class="me-3">
-            <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">3</div>
-          </div>
-          <div>
-            <h5>Follow Your Plan</h5>
-            <p>Get reminders and track progress as your garden grows.</p>
-          </div>
+        
+        <div class="row g-4">
+            <!-- Exemple de cartes de plantes -->
+            <div class="col-md-4">
+                <div class="plant-card p-4">
+                    <img src="https://images.unsplash.com/photo-1518977676601-b53f82aba655" class="card-img-top" alt="Tomates">
+                    <div class="card-body">
+                        <h5 class="card-title">Tomates Cerises</h5>
+                        <p class="text-success">Facile à cultiver • Plein soleil</p>
+                        <p>Parfaites pour les petits espaces et les débutants.</p>
+                        <a href="planet_from.html" class="btn btn-sm btn-success">Voir plus de detail</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="plant-card p-4">
+                    <img src="https://images.unsplash.com/photo-1629157247277-48f870757026?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top" alt="Basilic">
+                    <div class="card-body">
+                        <h5 class="card-title">Basilic</h5>
+                        <p class="text-success">Arrosage modéré • Mi-ombre</p>
+                        <p>Idéal pour les jardins aromatiques et les pots.</p>
+                        <a href="planet_from.html" class="btn btn-sm btn-success">Voir plus de detail</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="plant-card p-4">
+                    <img src="https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8RnJhaXNlc3xlbnwwfHwwfHx8MA%3D%3D" class="card-img-top" alt="Fraises">
+                    <div class="card-body">
+                        <h5 class="card-title">Fraises</h5>
+                        <p class="text-success">Entretien facile • Tous sols</p>
+                        <p>Productives et parfaites pour les petits jardins.</p>
+                        <a href="planet_from.html" class="btn btn-sm btn-success">Voir plus de detail</a>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-6">
-        <img src="assets/image/ho.jpg" alt="Garden planning illustration" class="img-fluid rounded shadow">
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="cta-section text-center">
-    <div class="container">
-      <h2 class="mb-4">Ready to Grow Your Own Food?</h2>
-      <p class="lead mb-4">Join thousands of gardeners creating sustainable mini farms at home</p>
-      <button class="btn btn-success btn-lg px-5 py-3">Get Started Free</button>
-    </div>
-  </section>
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="display-5 fw-bold mb-3">Prêt à transformer votre espace ?</h2>
+            <p class="lead mb-4">Notre technologie analyse votre situation pour des recommandations ultra-personnalisées</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="planet_from.html" class="btn btn-light btn-lg px-4">
+                    <i class="fas fa-play me-2"></i> Démarrer maintenant
+                </a>
+                <a href="planets.html" class="btn btn-outline-light btn-lg px-4">
+                    Explorer les plantes
+                </a>
+            </div>
+        </div>
+    </section>
 
-  <footer class="bg-dark text-white py-3 mt-5">
-    <div class="container">
-      <div class="text-center">
-        <h5 class="mb-2">GardenGrow</h5>
-        <p class="small mb-0">
-          <span class="text-white">© 2025 GardenGrow. All rights reserved.</span>
-        </p>
-      </div>
-    </div>
-  </footer>
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="fw-bold mb-3">GardenGrow</h5>
+                    <p>Votre assistant intelligent pour un jardin productif et adapté à vos besoins.</p>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h5 class="fw-bold mb-3">Liens utiles</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="planet_from.html" class="text-white-50">Créer mon jardin</a></li>
+                        <li class="mb-2"><a href="planets.html" class="text-white-50">Catalogue des plantes</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h5 class="fw-bold mb-3">Contact</h5>
+                    <p><i class="fas fa-envelope me-2"></i> contact@gardengrow.com</p>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="text-center">
+                <p class="small mb-0">© 2025 GardenGrow - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
 
-
-  <!-- <div class="container mt-5">
-    <h1>Bienvenue au Hackathon</h1>
-    <div id="api-data"></div>
-  </div>
-  <script>
-    fetch('../backend/api/exemple.php')
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById('api-data').innerText = JSON.stringify(data);
-      });
-  </script> -->
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/js/include.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Animation au scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const features = document.querySelectorAll('.feature-card');
+            
+            features.forEach((feature, index) => {
+                feature.style.transitionDelay = `${index * 100}ms`;
+            });
+        });
+    </script>
 </body>
 </html>
